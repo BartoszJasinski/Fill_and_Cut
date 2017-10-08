@@ -19,8 +19,8 @@ namespace Sketchpad
         private int spaceBetweenPolygonAndBoundingBox = 10;
         private Point? _mouseLocation;
 
-        private bool changeVertexPosition = false; //REIMPLEMENT
-        Point draggedVertexIndex;
+        private bool dragVertex = false; //REIMPLEMENT
+        int draggedVertexIndex = -1;
 
         public MainForm()
         {
@@ -34,10 +34,6 @@ namespace Sketchpad
             //this.canvas.MouseMove += this.canvas_MouseMove;
         }
 
-
-        private Point MouseDownLocation;
-
-
         private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
             Graphics graphics = canvas.CreateGraphics();
@@ -49,36 +45,27 @@ namespace Sketchpad
           
         }
 
-        //private void canvas_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    if (e.Button == System.Windows.Forms.MouseButtons.Left)
-        //    {
-        //        ChangeVertexPosition(vertice, e.Location);
-
-        //    }
-        //}
-
         void canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!changeVertexPosition)
+            if (!dragVertex)
                 return;
             Graphics graphics = canvas.CreateGraphics();
 
-            draggedVertexIndex = FindIfClickedNearVertex(e.Location);
+            //draggedVertexIndex = FindIfClickedNearVertex(e.Location);
             ChangeVertexPosition(draggedVertexIndex, e.Location);
             PaintCanvas(graphics, polygon);
-            //Invalidate();
 
             graphics.Dispose();
         }
 
-        private void ChangeVertexPosition(Point vertice, Point newVertice)
+        private void ChangeVertexPosition(int vertexIndex, Point newVertex)
         {
-            for(int i = 0; i < polygon.Count; i++)
-            {
-                if (polygon[i].Equals(vertice))
-                    polygon[i] = newVertice;
-            }
+            polygon[vertexIndex] = newVertex;
+            //for(int i = 0; i < polygon.Count; i++)
+            //{
+            //    if (polygon[i].Equals(vertice))
+            //        polygon[i] = newVertice;
+            //}
             //foreach(var point in polygon.Where(p => p.X == vertice.X/* && p.Y == vertice.Y */))
             //{
             //    point.X = newVertice.X;
@@ -92,7 +79,7 @@ namespace Sketchpad
         void canvas_MouseUp(object sender, MouseEventArgs e)
         {
             //this._mouseLocation = e.Location;
-            changeVertexPosition = false;
+            dragVertex = false;
         }
 
         //void canvas_MouseDown(object sender, MouseEventArgs e)
@@ -116,13 +103,13 @@ namespace Sketchpad
 
         private void HandleClick(Graphics graphics, List<Point> polygon, Point clickCoordinates)
         {
-            if ((draggedVertexIndex = FindIfClickedNearVertex(clickCoordinates)).Equals(new Point(-1, -1)))
+            if ((draggedVertexIndex = FindIfClickedNearVertex(clickCoordinates)) == -1)
             {
-                AddVerticeToPolygon(polygon, clickCoordinates);
+                AddVertexToPolygon(polygon, clickCoordinates);
                 PaintCanvas(graphics, polygon);
             }
             else
-                changeVertexPosition = true;
+                dragVertex = true;
 
         }
 
@@ -135,29 +122,30 @@ namespace Sketchpad
 
         }
 
-        private void AddVerticeToPolygon(List<Point> polygon, Point clickCoordinates)
+        private void AddVertexToPolygon(List<Point> polygon, Point clickCoordinates)
         {
             if (!polygon.Any((Point p) => { return p.Equals(clickCoordinates); }))
                 polygon.Add(clickCoordinates);
         }
 
-        private Point FindIfClickedNearVertex(Point clickCoordinates)
+        private int FindIfClickedNearVertex(Point clickCoordinates)
         {
-            // what if at least two vertices are <= selectVertexAreaSize
+            // what if at least two vertexes are <= selectVertexAreaSize
             int selectVertexAreaSize = 5; // variable to store size of area if clicked to select vertex in that area 
-            List<Point> verticesNearClick = polygon.FindAll((Point p) => { return Math.Abs(p.X - clickCoordinates.X) <= selectVertexAreaSize && Math.Abs(p.Y - clickCoordinates.Y) <= selectVertexAreaSize; });
+            List<Point> vertexesNearClick = polygon.FindAll((Point p) => { return Math.Abs(p.X - clickCoordinates.X) <= selectVertexAreaSize && Math.Abs(p.Y - clickCoordinates.Y) <= selectVertexAreaSize; });
             int indexForMinValue = 0;
-            //Searches for vertice which is nearest to click
-            for (int i = 0; i < verticesNearClick.Count; i++)
+            //Searches for vertex which is nearest to click
+            for (int i = 0; i < vertexesNearClick.Count; i++)
             {
-                if (verticesNearClick[indexForMinValue].X - clickCoordinates.X + verticesNearClick[indexForMinValue].Y - clickCoordinates.Y >
-                    verticesNearClick[i].X - clickCoordinates.X + verticesNearClick[i].Y - clickCoordinates.Y)
+                if (vertexesNearClick[indexForMinValue].X - clickCoordinates.X + vertexesNearClick[indexForMinValue].Y - clickCoordinates.Y >
+                    vertexesNearClick[i].X - clickCoordinates.X + vertexesNearClick[i].Y - clickCoordinates.Y)
                     indexForMinValue = i;
             }
-            if (verticesNearClick.Count > 0)
-                return verticesNearClick[indexForMinValue];
+
+            if (vertexesNearClick.Count > 0)
+                return polygon.IndexOf(vertexesNearClick[indexForMinValue]);
             else
-                return new Point(-1, -1);
+                return -1;
         }
 
 
