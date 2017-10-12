@@ -52,6 +52,11 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IO\IChangeCanvas.cs" />
+    <Compile Include="IO\Parameters.cs" />
+    <Compile Include="IO\StatePattern\ChangeCanvasData.cs" />
+    <Compile Include="IO\StatePattern\State.cs" />
+    <Compile Include="IO\StatePattern\VertexPosition.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +90,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

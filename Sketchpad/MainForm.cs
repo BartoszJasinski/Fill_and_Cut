@@ -17,10 +17,11 @@ namespace Sketchpad
         private Size vertexSize = new Size(3, 3);
         private Brush vertexColor = Brushes.Red, lineColor = Brushes.LightGreen, boundingBoxColor = Brushes.LightBlue;
         private int spaceBetweenPolygonAndBoundingBox = 10;
-        private Point? _mouseLocation;
 
         private bool dragVertex = false; //REIMPLEMENT
-        int draggedVertexIndex = -1;
+        private int draggedVertexIndex = -1;
+        private bool dragPolygon = false;
+        private Point mouseDownCoordinates;
 
         public MainForm()
         {
@@ -36,8 +37,10 @@ namespace Sketchpad
 
         private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
+            mouseDownCoordinates = e.Location;
+
             Graphics graphics = canvas.CreateGraphics();
-            Point clickCoordinates = new Point(e.X, e.Y), vertexCoordinates = new Point(e.X, e.Y);
+            Point clickCoordinates = e.Location, vertexCoordinates = e.Location;
 
             HandleClick(graphics, polygon, clickCoordinates);
             
@@ -47,20 +50,26 @@ namespace Sketchpad
 
         void canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!dragVertex)
-                return;
             Graphics graphics = canvas.CreateGraphics();
-
-            //draggedVertexIndex = FindIfClickedNearVertex(e.Location);
-            ChangeVertexPosition(draggedVertexIndex, e.Location);
+            if (dragVertex)
+                ChangeVertexPosition(draggedVertexIndex, e.Location);
+            else if(dragPolygon)
+                ChangePolygonPosition(e.Location);
+            else
+                return;
             PaintCanvas(graphics, polygon);
 
             graphics.Dispose();
         }
 
-        private void ChangeVertexPosition(int vertexIndex, Point newVertex)
+        private void ChangePolygonPosition(Point location)
         {
-            polygon[vertexIndex] = newVertex;
+            throw new NotImplementedException();
+        }
+
+        private void ChangeVertexPosition(int draggedVertexIndex, Point newVertex)
+        {
+            polygon[draggedVertexIndex] = newVertex;
             //for(int i = 0; i < polygon.Count; i++)
             //{
             //    if (polygon[i].Equals(vertice))
@@ -80,6 +89,7 @@ namespace Sketchpad
         {
             //this._mouseLocation = e.Location;
             dragVertex = false;
+            dragPolygon = false;
         }
 
         //void canvas_MouseDown(object sender, MouseEventArgs e)
@@ -109,15 +119,35 @@ namespace Sketchpad
                 PaintCanvas(graphics, polygon);
             }
             else
+            {
                 dragVertex = true;
+                return;
+            }
 
+            if ((CheckIfClickedInsideBoundingBox(GetBoundingBox(polygon), clickCoordinates)))
+                dragPolygon = true;
+            
+
+        }
+
+        private bool CheckIfClickedInsideBoundingBox(System.Drawing.Rectangle boundingBox, Point clickCoordinates)
+        {
+            return boundingBox.Contains(clickCoordinates);
+        }
+
+        private System.Drawing.Rectangle GetBoundingBox(List<Point> polygon)
+        {
+
+            int maxX = polygon.Max(p => p.X), maxY = polygon.Max(p => p.Y), minX = polygon.Min(p => p.X), minY = polygon.Min(p => p.Y);
+            System.Drawing.Rectangle boundingBox = new System.Drawing.Rectangle(minX - spaceBetweenPolygonAndBoundingBox / 2, minY - spaceBetweenPolygonAndBoundingBox / 2,
+                maxX - minX + spaceBetweenPolygonAndBoundingBox, maxY - minY + spaceBetweenPolygonAndBoundingBox);
+
+            return boundingBox;
         }
 
         private void DrawBoundingBox(Graphics graphics, List<Point> polygon)
         {
-            int maxX = polygon.Max(p => p.X), maxY = polygon.Max(p => p.Y), minX = polygon.Min(p => p.X), minY = polygon.Min(p => p.Y);
-            System.Drawing.Rectangle boundingBox = new System.Drawing.Rectangle(minX - spaceBetweenPolygonAndBoundingBox / 2, minY - spaceBetweenPolygonAndBoundingBox / 2,
-                maxX - minX + spaceBetweenPolygonAndBoundingBox, maxY - minY + spaceBetweenPolygonAndBoundingBox);
+            System.Drawing.Rectangle boundingBox = GetBoundingBox(polygon);
             graphics.DrawRectangle(new Pen(boundingBoxColor), boundingBox);
 
         }
