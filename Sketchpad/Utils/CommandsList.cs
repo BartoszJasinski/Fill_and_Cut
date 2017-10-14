@@ -13,6 +13,7 @@ namespace Sketchpad.Utils
             { BehaviourMode.VertexMove, new VertexMove() },
             { BehaviourMode.PolygonMove, new PolygonMove() },
             { BehaviourMode.VertexDelete, new VertexDelete()},
+            { BehaviourMode.EdgeVertexAdd, new EdgeVertexAdd() },
             { BehaviourMode.DoNothing, new DoNothing() }
         };
 

@@ -71,8 +71,11 @@ namespace Sketchpad
                 int clickedVertexIndex = -1;
                 if ((clickedVertexIndex = Algorithms.FindIfClickedNearVertex(canvasData, clickCoordinates)) == -1)
                 {
-                    //if(FindIfClickedNearEdge(cavasData, clickCoordinates))
-                    return new CanvasData(canvasData) { behaviourMode = BehaviourMode.VertexAdd, clickCoordinates = clickCoordinates };
+                    Tuple<int, int> edge = new Tuple<int, int>(-1, -1);
+                    if ((edge = Algorithms.FindIfClickedNearEdge(canvasData, clickCoordinates)).Equals(new Tuple<int, int>(-1, -1)))
+                        return new CanvasData(canvasData) { behaviourMode = BehaviourMode.VertexAdd, clickCoordinates = clickCoordinates };
+                    else
+                        return new CanvasData(canvasData) { behaviourMode = BehaviourMode.EdgeVertexAdd, edge = edge };
                 }
                 else
                     return new CanvasData(canvasData) { behaviourMode = BehaviourMode.VertexDelete, clickedVertexIndex = clickedVertexIndex };

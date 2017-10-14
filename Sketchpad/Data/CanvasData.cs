@@ -3,6 +3,7 @@ using System.Drawing;
 
 using Sketchpad.Utils;
 using Sketchpad.Data;
+using System;
 
 namespace Sketchpad.IO
 {
@@ -13,6 +14,7 @@ namespace Sketchpad.IO
         public Point clickCoordinates { get; set; }
         public int clickedVertexIndex { get; set; }
         public Point moveCoordinates { get; set; }
+        public Tuple<int, int> edge { get; set; }
 
         public CanvasData(BehaviourMode behaviourMode, Polygon polygon, Point clickCoordinates, int draggedVertexIndex)
         {
