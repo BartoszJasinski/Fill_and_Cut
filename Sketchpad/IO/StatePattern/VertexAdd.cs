@@ -8,7 +8,7 @@ namespace Sketchpad.IO.StatePattern
     {
         public void Change(CanvasData parameters)
         {
-            AddVertexToPolygon(parameters.polygon, parameters.clickCoordinates);
+            AddVertexToPolygon(parameters.polygon.vertices, parameters.clickCoordinates);
         }
 
         private void AddVertexToPolygon(List<Point> polygon, Point clickCoordinates)

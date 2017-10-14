@@ -10,7 +10,7 @@ namespace Sketchpad.IO.StatePattern
 
         private void DeleteVertex(CanvasData canvasData)
         {
-            canvasData.polygon.RemoveAt(canvasData.clickedVertexIndex);
+            canvasData.polygon.vertices.RemoveAt(canvasData.clickedVertexIndex);
 
         }
     }

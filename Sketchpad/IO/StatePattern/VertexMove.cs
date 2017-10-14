@@ -9,7 +9,7 @@
 
         private void ChangeVertexPosition(CanvasData parameters)
         {
-            parameters.polygon[parameters.clickedVertexIndex] = parameters.clickCoordinates;
+            parameters.polygon.vertices[parameters.clickedVertexIndex] = parameters.clickCoordinates;
         }
     }
 }

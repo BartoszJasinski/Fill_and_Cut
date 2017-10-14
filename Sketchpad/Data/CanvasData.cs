@@ -1,18 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+
 using Sketchpad.Utils;
+using Sketchpad.Data;
 
 namespace Sketchpad.IO
 {
     class CanvasData
     {
         public BehaviourMode behaviourMode { get; set; }
-        public List<Point> polygon { get; set; }
+        public Polygon polygon { get; set; }
         public Point clickCoordinates { get; set; }
         public int clickedVertexIndex { get; set; }
         public Point moveCoordinates { get; set; }
 
-        public CanvasData(BehaviourMode behaviourMode, List<Point> polygon, Point clickCoordinates, int draggedVertexIndex)
+        public CanvasData(BehaviourMode behaviourMode, Polygon polygon, Point clickCoordinates, int draggedVertexIndex)
         {
             this.behaviourMode = behaviourMode;
             this.polygon = polygon;
@@ -20,13 +22,13 @@ namespace Sketchpad.IO
             this.clickedVertexIndex = draggedVertexIndex;
         }
 
-        public CanvasData(BehaviourMode behaviourMode, List<Point> polygon, Point clickCoordinates): this(behaviourMode, polygon, clickCoordinates, -1)
+        public CanvasData(BehaviourMode behaviourMode, Polygon polygon, Point clickCoordinates): this(behaviourMode, polygon, clickCoordinates, -1)
         { }
 
-        public CanvasData(BehaviourMode behaviourMode, Point clickCoordinates) : this(behaviourMode, new List<Point>(), clickCoordinates, -1)
+        public CanvasData(BehaviourMode behaviourMode, Point clickCoordinates) : this(behaviourMode, new Polygon(), clickCoordinates, -1)
         { }
 
-        public CanvasData(BehaviourMode doNothing): this(doNothing, new List<Point>(), new Point(-1, -1))
+        public CanvasData(BehaviourMode doNothing): this(doNothing, new Polygon(), new Point(-1, -1))
         { }
 
         public CanvasData(CanvasData canvasData)
