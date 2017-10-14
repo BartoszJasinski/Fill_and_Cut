@@ -53,10 +53,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IO\IChangeCanvas.cs" />
-    <Compile Include="IO\Parameters.cs" />
+    <Compile Include="IO\CanvasData.cs" />
     <Compile Include="IO\StatePattern\ChangeCanvasData.cs" />
+    <Compile Include="IO\StatePattern\DoNothing.cs" />
+    <Compile Include="IO\StatePattern\PolygonMove.cs" />
     <Compile Include="IO\StatePattern\State.cs" />
-    <Compile Include="IO\StatePattern\VertexPosition.cs" />
+    <Compile Include="IO\StatePattern\VertexAdd.cs" />
+    <Compile Include="IO\StatePattern\VertexMove.cs" />
+    <Compile Include="IO\StateVariables.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,6 +69,10 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\ProgramSettings.cs" />
+    <Compile Include="Utils\BehaviourMode.cs" />
+    <Compile Include="Utils\ClickMode.cs" />
+    <Compile Include="Utils\CommandsList.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

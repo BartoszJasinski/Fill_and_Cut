@@ -9,6 +9,6 @@ namespace Sketchpad.IO.StatePattern
     abstract class State
     {
         //protected 
-        public abstract void Change(Parameters parameters);
+        public abstract void Change(CanvasData canvasData);
     }
 }

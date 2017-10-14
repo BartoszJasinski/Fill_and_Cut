@@ -8,6 +8,6 @@ namespace Sketchpad.IO
 {
     interface IChangeCanvasData
     {
-        void Apply(Parameters parameters);
+        void Apply(CanvasData parameters);
     }
 }

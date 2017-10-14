@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Sketchpad.IO.StatePattern
 {
-    class VertexPosition : State
+    class DoNothing: State
     {
-        public override void Change(Parameters parameters)
+        public override void Change(CanvasData parameters)
         {
-
+            return;
         }
     }
 }

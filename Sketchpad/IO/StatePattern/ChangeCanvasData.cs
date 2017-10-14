@@ -15,9 +15,9 @@ namespace Sketchpad.IO.StatePattern
 
         }
 
-        public void Change()
+        public void Change(CanvasData parameters)
         {
-            state.Change();
+           // state.Change();
         }
     }
 }
