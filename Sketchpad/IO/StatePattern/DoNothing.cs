@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sketchpad.IO.StatePattern
+﻿namespace Sketchpad.IO.StatePattern
 {
-    class DoNothing: State
+    class DoNothing: IChangeCanvasData
     {
-        public override void Change(CanvasData parameters)
+        public void Change(CanvasData parameters)
         {
             return;
         }

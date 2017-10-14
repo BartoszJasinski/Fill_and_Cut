@@ -52,15 +52,13 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IO\IChangeCanvas.cs" />
     <Compile Include="IO\CanvasData.cs" />
-    <Compile Include="IO\StatePattern\ChangeCanvasData.cs" />
     <Compile Include="IO\StatePattern\DoNothing.cs" />
     <Compile Include="IO\StatePattern\PolygonMove.cs" />
-    <Compile Include="IO\StatePattern\State.cs" />
+    <Compile Include="IO\StatePattern\IChangeCanvasData.cs" />
     <Compile Include="IO\StatePattern\VertexAdd.cs" />
+    <Compile Include="IO\StatePattern\VertexDelete.cs" />
     <Compile Include="IO\StatePattern\VertexMove.cs" />
-    <Compile Include="IO\StateVariables.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

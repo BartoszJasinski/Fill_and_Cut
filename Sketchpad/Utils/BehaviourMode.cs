@@ -5,6 +5,7 @@
         VertexAdd,
         VertexMove,
         PolygonMove,
+        VertexDelete,
         DoNothing
     }
 }

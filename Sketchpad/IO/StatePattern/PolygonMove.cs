@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Sketchpad.IO.StatePattern
 {
-    class PolygonMove : State
+    class PolygonMove : IChangeCanvasData
     {
-        public override void Change(CanvasData canvasData)
+        public void Change(CanvasData canvasData)
         {
             for(int i = 0; i < canvasData.polygon.Count; i++)
             {

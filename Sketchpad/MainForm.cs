@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Shapes;
 using Sketchpad.IO;
 using Sketchpad.Settings;
 using Sketchpad.Utils;
@@ -16,16 +11,8 @@ namespace Sketchpad
 {
     public partial class MainForm : Form
     {
-        private ProgramSettings programSettings = new ProgramSettings();
         // Is it possible not to have this variable (canvasData) and use only 
         private CanvasData canvasData = new CanvasData();
-
-        private bool dragVertex = false; //REIMPLEMENT
-        private int draggedVertexIndex = -1;
-        private bool dragPolygon = false;
-        //private Point mouseDownCoordinates;
-
-        private StateVariables stateVariables = new StateVariables();
 
         public MainForm()
         {
@@ -34,14 +21,10 @@ namespace Sketchpad
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //this.canvas.MouseDown += this.canvas_MouseDown;
-            //this.canvas.MouseUp += this.canvas_MouseUp;
-            //this.canvas.MouseMove += this.canvas_MouseMove;
         }
 
         private void canvas_MouseDown(object sender, MouseEventArgs e)
         {
-            //mouseDownCoordinates = e.Location;
             Graphics graphics = canvas.CreateGraphics();
             Point clickCoordinates = e.Location, vertexCoordinates = e.Location;
 
@@ -54,7 +37,7 @@ namespace Sketchpad
         private void HandleMouseClick(Graphics graphics, CanvasData canvasData, Point clickCoordinates)
         {
             InputMode inputMode = InputMode.SingleLeftClick;
-            if ((Control.ModifierKeys == Keys.Control))
+            if ((ModifierKeys == Keys.Control))
                 inputMode = InputMode.CtrlPressed;
 
             canvasData = GetBehaviorAndCanvasData(canvasData, clickCoordinates, inputMode);
@@ -82,14 +65,17 @@ namespace Sketchpad
         {
             if (clickMode == InputMode.SingleLeftClick)
             {
-
-                return new CanvasData(canvasData) { behaviourMode = BehaviourMode.VertexAdd, clickCoordinates = clickCoordinates };
+                int clickedVertexIndex = -1;
+                if ((clickedVertexIndex = FindIfClickedNearVertex(clickCoordinates)) == -1)
+                    return new CanvasData(canvasData) { behaviourMode = BehaviourMode.VertexAdd, clickCoordinates = clickCoordinates };
+                else
+                    return new CanvasData(canvasData) { behaviourMode = BehaviourMode.VertexDelete, clickedVertexIndex = clickedVertexIndex };
             }
 
             if (clickMode == InputMode.CtrlPressed)
             {
-                int draggedVertex = -1;
-                if ((draggedVertex = FindIfClickedNearVertex(clickCoordinates)) == -1)
+                int clickedVertexIndex = -1;
+                if ((clickedVertexIndex = FindIfClickedNearVertex(clickCoordinates)) == -1)
                 {
                     if (CheckIfClickedInsideBoundingBox(GetBoundingBox(canvasData.polygon), clickCoordinates))
                         return new CanvasData(canvasData) { behaviourMode = BehaviourMode.PolygonMove, clickCoordinates = clickCoordinates };
@@ -97,7 +83,7 @@ namespace Sketchpad
                         return new CanvasData(canvasData) { behaviourMode = BehaviourMode.DoNothing };
                 }
                 else
-                    return new CanvasData(canvasData) { behaviourMode = BehaviourMode.VertexMove, clickCoordinates = clickCoordinates, draggedVertexIndex = draggedVertex };
+                    return new CanvasData(canvasData) { behaviourMode = BehaviourMode.VertexMove, clickCoordinates = clickCoordinates, clickedVertexIndex = clickedVertexIndex };
             }
 
             return new CanvasData(canvasData) { behaviourMode = BehaviourMode.DoNothing };
@@ -173,12 +159,6 @@ namespace Sketchpad
             canvasData.behaviourMode = BehaviourMode.DoNothing;
         }
 
-        //void canvas_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    //Check if you've left-clicked if you want
-        //    this._mouseLocation = e.Location;
-        //}
-
         private void canvas_MouseClick(object sender, MouseEventArgs e)
         {
 
@@ -194,19 +174,19 @@ namespace Sketchpad
 
 
 
-        private bool CheckIfClickedInsideBoundingBox(System.Drawing.Rectangle boundingBox, Point clickCoordinates)
+        private bool CheckIfClickedInsideBoundingBox(Rectangle boundingBox, Point clickCoordinates)
         {
             return boundingBox.Contains(clickCoordinates);
         }
 
-        private System.Drawing.Rectangle GetBoundingBox(List<Point> polygon)
+        private Rectangle GetBoundingBox(List<Point> polygon)
         {
             if(polygon.Count == 0)
-                return new System.Drawing.Rectangle(0, 0, 0, 0);
+                return new Rectangle(0, 0, 0, 0);
 
             int maxX = polygon.Max(p => p.X), maxY = polygon.Max(p => p.Y), minX = polygon.Min(p => p.X), minY = polygon.Min(p => p.Y);
-            System.Drawing.Rectangle boundingBox = new System.Drawing.Rectangle(minX - programSettings.spaceBetweenPolygonAndBoundingBox / 2, minY - programSettings.spaceBetweenPolygonAndBoundingBox / 2,
-                maxX - minX + programSettings.spaceBetweenPolygonAndBoundingBox, maxY - minY + programSettings.spaceBetweenPolygonAndBoundingBox);
+            Rectangle boundingBox = new Rectangle(minX - ProgramSettings.spaceBetweenPolygonAndBoundingBox / 2, minY - ProgramSettings.spaceBetweenPolygonAndBoundingBox / 2,
+                maxX - minX + ProgramSettings.spaceBetweenPolygonAndBoundingBox, maxY - minY + ProgramSettings.spaceBetweenPolygonAndBoundingBox);
 
             return boundingBox;
         }
@@ -214,7 +194,7 @@ namespace Sketchpad
         private void DrawBoundingBox(Graphics graphics, List<Point> polygon)
         {
             System.Drawing.Rectangle boundingBox = GetBoundingBox(polygon);
-            graphics.DrawRectangle(new Pen(programSettings.boundingBoxColor), boundingBox);
+            graphics.DrawRectangle(new Pen(ProgramSettings.boundingBoxColor), boundingBox);
 
         }
 
@@ -257,22 +237,18 @@ namespace Sketchpad
 
         private void DrawVertex(Graphics graphics, Point vertexCoordinates)
         {
-            System.Drawing.Rectangle vertex = new System.Drawing.Rectangle(vertexCoordinates, programSettings.vertexSize);
-            graphics.FillRectangle(programSettings.vertexColor, vertex);
+            Rectangle vertex = new Rectangle(vertexCoordinates, ProgramSettings.vertexSize);
+            graphics.FillRectangle(ProgramSettings.vertexColor, vertex);
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            //if(e.KeyCode == Keys.ControlKey)
-            //    //stateVariables.CtrlPressed = true;
-            //if (e.KeyCode == Keys.A)
-            //    stateVariables.CtrlPressed = true;
+
         }
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
-            //if (e.KeyCode == Keys.Control)
-            //stateVariables.CtrlPressed = false;
+
         }
 
  
@@ -280,7 +256,7 @@ namespace Sketchpad
         //TODO Reimpelement with custom Bersenham algorithm
         private void MyDrawLine(Graphics graphics, Point p1, Point p2)
         {
-            graphics.DrawLine(new Pen(programSettings.lineColor), p1, p2);
+            graphics.DrawLine(new Pen(ProgramSettings.lineColor), p1, p2);
         }
 
     }
