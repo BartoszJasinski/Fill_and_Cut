@@ -29,17 +29,12 @@ namespace Sketchpad
                 return;
             }
 
-            Graphics graphics = canvas.CreateGraphics();
-            Point clickCoordinates = e.Location, vertexCoordinates = e.Location;
-            
-            HandleMouseDown(graphics, canvasData, clickCoordinates);
+            HandleMouseDown(canvasData, e.Location);
 
-            Render.Render.PaintCanvas(graphics, canvasData.polygon.vertices);
-
-            graphics.Dispose();
+            PaintCanvas();
         }
 
-        private void HandleMouseDown(Graphics graphics, CanvasData canvasData, Point clickCoordinates)
+        private void HandleMouseDown(CanvasData canvasData, Point clickCoordinates)
         {
             InputMode inputMode = InputMode.SingleLeftClick;
             if ((ModifierKeys == Keys.Control))
@@ -90,27 +85,24 @@ namespace Sketchpad
 
         void canvas_MouseMove(object sender, MouseEventArgs e)
         {
-            Graphics graphics = canvas.CreateGraphics();
+            HandleMouseMove(canvasData, e.Location);
 
-            HandleMouseMove(canvasData, e.Location, graphics);
-
-            Render.Render.PaintCanvas(graphics, canvasData.polygon.vertices);
-
-
-            graphics.Dispose();
+            PaintCanvas();
         }
 
-        private void HandleMouseMove(CanvasData canvasData, Point clickCoordinates, Graphics graphics)
+        private void HandleMouseMove(CanvasData canvasData, Point clickCoordinates)
         {
             if (canvasData.behaviourMode == BehaviourMode.VertexMove)
-                //canvasData = GetBehaviorAndCanvasData(canvasData, clickCoordinates);
+            {
                 canvasData.clickCoordinates = clickCoordinates;
-               
-            else if(canvasData.behaviourMode == BehaviourMode.PolygonMove)
-                //canvasData.clickCoordinates = new Point(canvasData.clickCoordinates.X - clickCoordinates.X, canvasData.clickCoordinates.Y - clickCoordinates.Y);
+                CommandsList.GetCommand(canvasData).Change(canvasData);
+            }
+            else if (canvasData.behaviourMode == BehaviourMode.PolygonMove)
+            {
                 canvasData.moveCoordinates = clickCoordinates;
+                CommandsList.GetCommand(canvasData).Change(canvasData);
+            }
 
-            CommandsList.GetCommand(canvasData).Change(canvasData);
             this.canvasData = canvasData;
 
         }
@@ -122,25 +114,68 @@ namespace Sketchpad
 
         private void horizontalEdgeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddSingleEdgeConstraint(canvasData, ConstraintMode.HorizontalEdge);
+            Tuple<int, int> edge = AddSingleEdgeConstraint(canvasData, ConstraintMode.HorizontalEdge);
+
+            if (edge.Equals(new Tuple<int, int>(-1, -1)))
+                return;
+
+            canvasData.polygon.vertices[edge.Item1] = canvasData.clickCoordinates;
+            canvasData.polygon.vertices[edge.Item2] = new Point(canvasData.polygon.vertices[edge.Item2].X, canvasData.clickCoordinates.Y);
+
+            
         }
 
         private void verticalEdgeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddSingleEdgeConstraint(canvasData, ConstraintMode.VerticalEdge);
+            Tuple<int, int> edge = AddSingleEdgeConstraint(canvasData, ConstraintMode.VerticalEdge);
+
+            if (edge.Equals(new Tuple<int, int>(-1, -1)))
+                return;
+
+            canvasData.polygon.vertices[edge.Item1] = canvasData.clickCoordinates;
+            canvasData.polygon.vertices[edge.Item2] = new Point(canvasData.clickCoordinates.X, canvasData.polygon.vertices[edge.Item2].Y);
         }
 
-        private void AddSingleEdgeConstraint(CanvasData canvasData, ConstraintMode constraintMode)
+        private Tuple<int, int> AddSingleEdgeConstraint(CanvasData canvasData, ConstraintMode constraintMode)
         {
             Tuple<int, int> edge = new Tuple<int, int>(-1, -1);
-            if ((edge = Algorithms.FindIfClickedNearEdge(canvasData, canvasData.clickCoordinates)).Equals(new Tuple<int, int>(-1, -1)))
-                return;
-            else
+            if (!(edge = Algorithms.FindIfClickedNearEdge(canvasData, canvasData.clickCoordinates)).Equals(new Tuple<int, int>(-1, -1)))
             {
                 List<Tuple<int, int>> constrainedEdges = new List<Tuple<int, int>>();
                 constrainedEdges.Add(edge);
                 canvasData.constraints.Add(new Constraint(constraintMode, constrainedEdges));
             }
+
+            return edge;
         }
+
+        private void DeletePossibleEdgeConstraints(ConstraintMode constraintMode, Tuple<int, int> edge)
+        {
+            List<Tuple<int, int>> constrainedEdges = new List<Tuple<int, int>>();
+            constrainedEdges.Add(edge);
+
+            canvasData.constraints.Remove(new Constraint(constraintMode, constrainedEdges));
+
+            edge = new Tuple<int, int>(edge.Item2, edge.Item1);
+            constrainedEdges = new List<Tuple<int, int>>();
+            constrainedEdges.Add(edge);
+            canvasData.constraints.Remove(new Constraint(constraintMode, constrainedEdges));
+
+        }
+
+
+        private void fixAngleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void PaintCanvas()
+        {
+            Graphics graphics = canvas.CreateGraphics();
+            Render.Render.PaintCanvas(graphics, canvasData.polygon.vertices);
+
+            graphics.Dispose();
+        }
+
     }
 }

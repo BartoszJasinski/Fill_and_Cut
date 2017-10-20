@@ -29,7 +29,7 @@ namespace Sketchpad.IO.StatePattern
             if (constraints[0].constraintMode == ConstraintMode.VerticalEdge)
                 ChangeSingleConstrainedEdgePosition(canvasData, secondVertexIndex, new Point(canvasData.clickCoordinates.X, canvasData.polygon.vertices[secondVertexIndex].Y));
             else if (constraints[0].constraintMode == ConstraintMode.HorizontalEdge)
-                ChangeSingleConstrainedEdgePosition(canvasData, secondVertexIndex, new Point(canvasData.polygon.vertices[secondVertexIndex].Y, canvasData.clickCoordinates.Y));
+                ChangeSingleConstrainedEdgePosition(canvasData, secondVertexIndex, new Point(canvasData.polygon.vertices[secondVertexIndex].X, canvasData.clickCoordinates.Y));
             else
                 ;
         }

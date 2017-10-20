@@ -57,7 +57,7 @@
             this.horizontalEdgeToolStripMenuItem,
             this.fixAngleToolStripMenuItem});
             this.constraintsMenuStrip.Name = "contextMenuStrip1";
-            this.constraintsMenuStrip.Size = new System.Drawing.Size(191, 70);
+            this.constraintsMenuStrip.Size = new System.Drawing.Size(191, 92);
             // 
             // verticalEdgeToolStripMenuItem
             // 
@@ -78,6 +78,7 @@
             this.fixAngleToolStripMenuItem.Name = "fixAngleToolStripMenuItem";
             this.fixAngleToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.fixAngleToolStripMenuItem.Text = "Fix Angle";
+            this.fixAngleToolStripMenuItem.Click += new System.EventHandler(this.fixAngleToolStripMenuItem_Click);
             // 
             // MainForm
             // 
