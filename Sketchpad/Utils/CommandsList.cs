@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Sketchpad.IO.StatePattern;
-using Sketchpad.IO;
+using Sketchpad.Data.StatePattern;
+using Sketchpad.Data;
 
 namespace Sketchpad.Utils
 {

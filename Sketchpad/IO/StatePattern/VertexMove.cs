@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Sketchpad.Data;
 using Sketchpad.Utils;
 
-namespace Sketchpad.IO.StatePattern
+namespace Sketchpad.Data.StatePattern
 {
-    class VertexMove : IChangeCanvasData
+    class VertexMove: IChangeCanvasData
     {
         public void Change(CanvasData canvasData)
         {
@@ -22,16 +22,25 @@ namespace Sketchpad.IO.StatePattern
                 return;
             }
 
-            int secondVertexIndex = constraints[0].constrainedEdges[0].Item2;
-            if (secondVertexIndex == canvasData.clickedVertexIndex)
-                secondVertexIndex = constraints[0].constrainedEdges[0].Item1;
+            ApplyConstraints(canvasData, constraints);
+            
+        }
 
-            if (constraints[0].constraintMode == ConstraintMode.VerticalEdge)
-                ChangeSingleConstrainedEdgePosition(canvasData, secondVertexIndex, new Point(canvasData.clickCoordinates.X, canvasData.polygon.vertices[secondVertexIndex].Y));
-            else if (constraints[0].constraintMode == ConstraintMode.HorizontalEdge)
-                ChangeSingleConstrainedEdgePosition(canvasData, secondVertexIndex, new Point(canvasData.polygon.vertices[secondVertexIndex].X, canvasData.clickCoordinates.Y));
-            else
-                ;
+        private void ApplyConstraints(CanvasData canvasData, List<Constraint> constraints)
+        {
+            foreach (Constraint constraint in constraints)
+            {
+                int secondVertexIndex = constraint.constrainedEdges[0].Item2;
+                if (secondVertexIndex == canvasData.clickedVertexIndex)
+                    secondVertexIndex = constraint.constrainedEdges[0].Item1;
+
+                if (constraint.constraintMode == ConstraintMode.VerticalEdge)
+                    ChangeSingleConstrainedEdgePosition(canvasData, secondVertexIndex, new Point(canvasData.clickCoordinates.X, canvasData.polygon.vertices[secondVertexIndex].Y));
+                else if (constraint.constraintMode == ConstraintMode.HorizontalEdge)
+                    ChangeSingleConstrainedEdgePosition(canvasData, secondVertexIndex, new Point(canvasData.polygon.vertices[secondVertexIndex].X, canvasData.clickCoordinates.Y));
+                else
+                    ;
+            }
         }
 
         private void ChangeSingleConstrainedEdgePosition(CanvasData canvasData, int secondVertexIndex, Point secondVertexLocation)

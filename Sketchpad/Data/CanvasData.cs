@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using Sketchpad.Utils;
-using Sketchpad.Data;
 
-namespace Sketchpad.IO
+namespace Sketchpad.Data
 {
     class CanvasData
     {

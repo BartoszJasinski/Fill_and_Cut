@@ -8,6 +8,7 @@ namespace Sketchpad.Settings
         public static Brush vertexColor { get; } = Brushes.Red;
         public static Brush lineColor { get; } = Brushes.LightGreen;
         public static Brush boundingBoxColor { get; } = Brushes.LightBlue;
+        public static Brush iconColor { get; } = Brushes.Black;
         public static int spaceBetweenPolygonAndBoundingBox { get; } = 10;
         public static int selectVertexAreaSize = 5, selectEdgeAreaSize = 5; // variable to store size of area if clicked to select vertex in that area 
 

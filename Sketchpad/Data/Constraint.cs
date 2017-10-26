@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Sketchpad.Utils;
 
 namespace Sketchpad.Data
 {
-    class Constraint
+    class Constraint: IEquatable<Constraint>
     {
         public ConstraintMode constraintMode { get; set; }
         public List<Tuple<int, int>> constrainedEdges { get; set; }
@@ -22,5 +23,13 @@ namespace Sketchpad.Data
         {
         }
 
+        public bool Equals(Constraint other)
+        {
+            if (other == null)
+                return false;
+            return (constraintMode.Equals(other.constraintMode) && !constrainedEdges.Except(other.constrainedEdges).ToList().Any() && angle == other.angle);
+
+            //return false;
+        }
     }
 }

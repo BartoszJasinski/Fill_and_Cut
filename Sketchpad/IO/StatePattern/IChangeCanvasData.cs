@@ -1,4 +1,4 @@
-﻿namespace Sketchpad.IO.StatePattern
+﻿namespace Sketchpad.Data.StatePattern
 {
     interface IChangeCanvasData
     {

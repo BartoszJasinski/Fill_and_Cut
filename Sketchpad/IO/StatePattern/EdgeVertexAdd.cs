@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Sketchpad.IO.StatePattern
+namespace Sketchpad.Data.StatePattern
 {
     class EdgeVertexAdd : IChangeCanvasData
     {

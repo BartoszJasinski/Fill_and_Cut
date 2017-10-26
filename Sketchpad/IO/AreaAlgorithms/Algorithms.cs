@@ -4,7 +4,7 @@ using System.Drawing;
 
 using Sketchpad.Settings;
 
-namespace Sketchpad.IO.AreaAlgorithms
+namespace Sketchpad.Data.AreaAlgorithms
 {
     static class Algorithms
     {

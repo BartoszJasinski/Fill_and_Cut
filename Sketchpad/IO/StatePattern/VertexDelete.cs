@@ -1,5 +1,4 @@
-﻿
-namespace Sketchpad.IO.StatePattern
+﻿namespace Sketchpad.Data.StatePattern
 {
     class VertexDelete: IChangeCanvasData
     {

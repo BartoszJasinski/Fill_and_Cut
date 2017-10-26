@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 
-namespace Sketchpad.IO.StatePattern
+namespace Sketchpad.Data.StatePattern
 {
     class VertexAdd: IChangeCanvasData
     {
