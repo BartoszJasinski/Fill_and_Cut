@@ -54,8 +54,19 @@ namespace Sketchpad.Data
         public CanvasData(): this(BehaviourMode.DoNothing)
         { }
 
+        public static void DeletePossibleEdgeConstraint(CanvasData canvasData, ConstraintMode constraintMode, Tuple<int, int> edge, double angle = -1)
+        {
+            List<Tuple<int, int>> constrainedEdges = new List<Tuple<int, int>>();
+            constrainedEdges.Add(edge);
+            canvasData.constraints.Remove(new Constraint(constraintMode, constrainedEdges));
 
-        
+            edge = new Tuple<int, int>(edge.Item2, edge.Item1);
+            constrainedEdges = new List<Tuple<int, int>>();
+            constrainedEdges.Add(edge);
+            canvasData.constraints.Remove(new Constraint(constraintMode, constrainedEdges));
+
+        }
+
 
 
     }

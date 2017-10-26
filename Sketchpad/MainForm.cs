@@ -11,7 +11,6 @@ namespace Sketchpad
 {
     public partial class MainForm : Form
     {
-        // Is it possible not to have this variable (canvasData) and use only 
         private CanvasData canvasData = new CanvasData();
 
         public MainForm()
@@ -120,10 +119,7 @@ namespace Sketchpad
             if (edge.Equals(new Tuple<int, int>(-1, -1)))
                 return;
 
-            //VertexMove vertexMove = new VertexMove();
-            //vertexMove.Change(canvasData);
-            canvasData.polygon.vertices[edge.Item1] = canvasData.clickCoordinates;
-            canvasData.polygon.vertices[edge.Item2] = new Point(canvasData.polygon.vertices[edge.Item2].X, canvasData.clickCoordinates.Y);
+            canvasData.polygon.vertices[edge.Item2] = new Point(canvasData.polygon.vertices[edge.Item2].X, canvasData.polygon.vertices[edge.Item1].Y);
 
         }
 
@@ -134,10 +130,7 @@ namespace Sketchpad
             if (edge.Equals(new Tuple<int, int>(-1, -1)))
                 return;
 
-            //VertexMove vertexMove = new VertexMove();
-            //vertexMove.Change(canvasData);
-            canvasData.polygon.vertices[edge.Item1] = canvasData.clickCoordinates;
-            canvasData.polygon.vertices[edge.Item2] = new Point(canvasData.clickCoordinates.X, canvasData.polygon.vertices[edge.Item2].Y);
+            canvasData.polygon.vertices[edge.Item2] = new Point(canvasData.polygon.vertices[edge.Item1].X, canvasData.polygon.vertices[edge.Item2].Y);
         }
 
         private Tuple<int, int> AddSingleEdgeConstraint(CanvasData canvasData, ConstraintMode constraintMode)
@@ -145,7 +138,7 @@ namespace Sketchpad
             Tuple<int, int> edge = new Tuple<int, int>(-1, -1);
             if (!(edge = Algorithms.FindIfClickedNearEdge(canvasData, canvasData.clickCoordinates)).Equals(new Tuple<int, int>(-1, -1)))
             {
-                DeletePossibleEdgeConstraint(constraintMode, edge, -1);
+                CanvasData.DeletePossibleEdgeConstraint(canvasData, constraintMode, edge, -1);
                 List<Tuple<int, int>> constrainedEdges = new List<Tuple<int, int>>();
                 constrainedEdges.Add(edge);
                 Constraint constraint = new Constraint(constraintMode, constrainedEdges);
@@ -170,61 +163,157 @@ namespace Sketchpad
                 oneVertexAfter = (constraint.constrainedEdges[0].Item1 + 1) % canvasData.polygon.vertices.Count;
             }
 
-            List<Tuple<int, int>> edge = new List<Tuple<int, int>>();
-            edge.Add(new Tuple<int, int>(oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count));// FIX ME possibly have to check inverted version of edge
-            Constraint forbiddenNeighbourConstraint = new Constraint(constraint.constraintMode, edge, -1);
-            if (canvasData.constraints.Find(x => x.Equals(forbiddenNeighbourConstraint)) != null)
-                return false;
 
-            edge = new List<Tuple<int, int>>();
-            edge.Add(new Tuple<int, int>((oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore));
-            forbiddenNeighbourConstraint = new Constraint(constraint.constraintMode, edge, -1);
-            if (canvasData.constraints.Find(x => x.Equals(forbiddenNeighbourConstraint)) != null)
-                return false;
+            ////REFACTOR
+            //List<Tuple<int, int>> edge = new List<Tuple<int, int>>();
+            //edge.Add(new Tuple<int, int>(oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count));// FIX ME possibly have to check inverted version of edge
+            //Constraint forbiddenNeighbourConstraint = new Constraint(constraint.constraintMode, edge, -1);
+            //if (canvasData.constraints.Find(x => x.Equals(forbiddenNeighbourConstraint)) != null)
+            //    return false;
 
-            edge = new List<Tuple<int, int>>();
-            edge.Add(new Tuple<int, int>((oneVertexAfter - 1) % canvasData.polygon.vertices.Count, oneVertexAfter));
-            forbiddenNeighbourConstraint = new Constraint(constraint.constraintMode, edge, -1);
-            if (canvasData.constraints.Find(x => x.Equals(forbiddenNeighbourConstraint)) != null)
-                return false;
-
-            edge = new List<Tuple<int, int>>();
-            edge.Add(new Tuple<int, int>(oneVertexAfter, (oneVertexAfter - 1) % canvasData.polygon.vertices.Count));
-            forbiddenNeighbourConstraint = new Constraint(constraint.constraintMode, edge, -1);
-            if (canvasData.constraints.Find(x => x.Equals(forbiddenNeighbourConstraint)) != null)
+            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbour(canvasData, (oneVertexAfter - 1) % canvasData.polygon.vertices.Count, oneVertexAfter, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter, (oneVertexAfter - 1) % canvasData.polygon.vertices.Count, constraint.constraintMode, -1))
                 return false;
 
             return true;
 
         }
 
-        private void DeletePossibleEdgeConstraint(ConstraintMode constraintMode, Tuple<int, int> edge, double angle)
+        private bool IfConstraintExistsInNeighbour(CanvasData canvasData, int firstVertexOfEdge, int secondVertexOfEdge, ConstraintMode constraintMode, double angle)
         {
-            List<Tuple<int, int>> constrainedEdges = new List<Tuple<int, int>>();
-            constrainedEdges.Add(edge);
-            canvasData.constraints.Remove(new Constraint(constraintMode, constrainedEdges, angle));
+            List<Tuple<int, int>> edge = new List<Tuple<int, int>>();
+            edge.Add(new Tuple<int, int>(firstVertexOfEdge, secondVertexOfEdge));
+            Constraint forbiddenNeighbourConstraint = new Constraint(constraintMode, edge, -1);
+            if (canvasData.constraints.Find(x => x.Equals(forbiddenNeighbourConstraint)) != null)
+                return true;
 
-            edge = new Tuple<int, int>(edge.Item2, edge.Item1);
-            constrainedEdges = new List<Tuple<int, int>>();
-            constrainedEdges.Add(edge);
-            canvasData.constraints.Remove(new Constraint(constraintMode, constrainedEdges, angle));
-
+            return false;
         }
+
 
 
         private void fixAngleToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            int clickedVertexIndex = -1;
+            if ((clickedVertexIndex = Algorithms.FindIfClickedNearVertex(canvasData, canvasData.clickCoordinates)) == -1)
+                return;
+
+            int firstNeighbourOfClickedVertexIndex = Algorithms.mod((clickedVertexIndex - 1), canvasData.polygon.vertices.Count), 
+                secondNeighbourOfClickedVertexIndex = (clickedVertexIndex + 1) % canvasData.polygon.vertices.Count;
+
+            Point clickedVertex = canvasData.polygon.vertices[clickedVertexIndex], 
+                secondNeighbourOfClickedVertex = canvasData.polygon.vertices[firstNeighbourOfClickedVertexIndex],
+                firstNeighbourOfClickedVertex = canvasData.polygon.vertices[secondNeighbourOfClickedVertexIndex];
+
+            System.Windows.Vector firstVector = new System.Windows.Vector(clickedVertex.X - secondNeighbourOfClickedVertex.X,
+                clickedVertex.Y - secondNeighbourOfClickedVertex.Y), secondVector = new System.Windows.Vector(firstNeighbourOfClickedVertex.X - clickedVertex.X,
+                firstNeighbourOfClickedVertex.Y - clickedVertex.Y);
+
+            //Tuple<int, int> edge = new Tuple<int, int>(-1, -1);
+            //if (!(edge = Algorithms.FindIfClickedNearEdge(canvasData, canvasData.clickCoordinates)).Equals(new Tuple<int, int>(-1, -1)))
+            //{
+            //    CanvasData.DeletePossibleEdgeConstraint(canvasData, constraintMode, edge, -1);
+            //    List<Tuple<int, int>> constrainedEdges = new List<Tuple<int, int>>();
+            //    constrainedEdges.Add(edge);
+            //    Constraint constraint = new Constraint(constraintMode, constrainedEdges);
+            //    if (IfConstraintCanBeAdded(canvasData, constraint))
+            //        canvasData.constraints.Add(constraint);
+            //    else
+            //        return new Tuple<int, int>(-1, -1);
+            //}
+
+            //return edge;
+
+            //CanvasData.DeletePossibleEdgeConstraint(canvasData, constraintMode, edge, -1);
+            List<Tuple<int, int>> constrainedEdges = new List<Tuple<int, int>>();
+            constrainedEdges.Add(new Tuple<int, int>(clickedVertexIndex, firstNeighbourOfClickedVertexIndex));
+            constrainedEdges.Add(new Tuple<int, int>(clickedVertexIndex, secondNeighbourOfClickedVertexIndex));
+            double angle = System.Windows.Vector.AngleBetween(firstVector, secondVector);
+            Constraint constraint = new Constraint(ConstraintMode.FixedAngle, constrainedEdges, 180 - Math.Abs(angle));
+            if (IfConstraintCanBeAddedFixed(canvasData, constraint))
+                canvasData.constraints.Add(constraint);
+            else
+                return;
 
         }
 
+
+
+        private bool IfConstraintCanBeAddedFixed(CanvasData canvasData, Constraint constraint)
+        {
+            int oneVertexBefore = (constraint.constrainedEdges[0].Item1 - 1) % canvasData.polygon.vertices.Count,
+                oneVertexAfter = (constraint.constrainedEdges[0].Item2 + 1) % canvasData.polygon.vertices.Count;
+
+            if (oneVertexBefore > oneVertexAfter)
+            {
+                oneVertexBefore = (constraint.constrainedEdges[0].Item2 - 1) % canvasData.polygon.vertices.Count;
+                oneVertexAfter = (constraint.constrainedEdges[0].Item1 + 1) % canvasData.polygon.vertices.Count;
+            }
+
+            int oneVertexBefore2 = (constraint.constrainedEdges[1].Item1 - 1) % canvasData.polygon.vertices.Count,
+            oneVertexAfter2 = (constraint.constrainedEdges[1].Item2 + 1) % canvasData.polygon.vertices.Count;
+
+            if (oneVertexBefore > oneVertexAfter)
+            {
+                oneVertexBefore = (constraint.constrainedEdges[1].Item2 - 1) % canvasData.polygon.vertices.Count;
+                oneVertexAfter = (constraint.constrainedEdges[1].Item1 + 1) % canvasData.polygon.vertices.Count;
+            }
+
+            ////REFACTOR
+            //List<Tuple<int, int>> edge = new List<Tuple<int, int>>();
+            //edge.Add(new Tuple<int, int>(oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count));// FIX ME possibly have to check inverted version of edge
+            //Constraint forbiddenNeighbourConstraint = new Constraint(constraint.constraintMode, edge, -1);
+            //if (canvasData.constraints.Find(x => x.Equals(forbiddenNeighbourConstraint)) != null)
+            //    return false;
+
+            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), oneVertexAfter, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), constraint.constraintMode, -1))
+                return false;
+
+            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore2, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, oneVertexBefore2, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), oneVertexAfter2, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter2, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), constraint.constraintMode, -1))
+                return false;
+
+            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), oneVertexAfter, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), ConstraintMode.HorizontalEdge, -1))
+                return false;
+
+            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore2, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, oneVertexBefore2, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), oneVertexAfter2, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter2, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), ConstraintMode.HorizontalEdge, -1))
+                return false;
+
+            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), oneVertexAfter, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), ConstraintMode.VerticalEdge, -1))
+                return false;
+
+            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore2, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, oneVertexBefore2, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), oneVertexAfter2, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter2, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), ConstraintMode.VerticalEdge, -1))
+                return false;
+
+            return true;
+        }
 
         private void deleteConstraintToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Tuple<int, int> edge = new Tuple<int, int>(-1, -1);
             if (!(edge = Algorithms.FindIfClickedNearEdge(canvasData, canvasData.clickCoordinates)).Equals(new Tuple<int, int>(-1, -1)))
             {
-                DeletePossibleEdgeConstraint(ConstraintMode.VerticalEdge, edge, -1);
-                DeletePossibleEdgeConstraint(ConstraintMode.HorizontalEdge, edge, -1);
+                CanvasData.DeletePossibleEdgeConstraint(canvasData, ConstraintMode.VerticalEdge, edge, -1);
+                CanvasData.DeletePossibleEdgeConstraint(canvasData, ConstraintMode.HorizontalEdge, edge, -1);
                 List<Tuple<int, int>> constrainedEdges = new List<Tuple<int, int>>();
             }
 
@@ -240,7 +329,8 @@ namespace Sketchpad
 
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
-            Render.Render.PaintCanvas(e.Graphics, canvasData);
+            
+            Render.Render.PaintCanvas(e, canvasData);
         }
 
     }

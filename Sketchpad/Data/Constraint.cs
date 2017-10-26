@@ -27,7 +27,7 @@ namespace Sketchpad.Data
         {
             if (other == null)
                 return false;
-            return (constraintMode.Equals(other.constraintMode) && !constrainedEdges.Except(other.constrainedEdges).ToList().Any() && angle == other.angle);
+            return (constraintMode.Equals(other.constraintMode) && !constrainedEdges.Except(other.constrainedEdges).ToList().Any());
 
             //return false;
         }
