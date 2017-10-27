@@ -50,12 +50,12 @@ namespace Sketchpad.Data.StatePattern
                         int y2 = canvasData.polygon.vertices[constraint.constrainedEdges[1].Item2].Y;
 
                         System.Windows.Vector firstVector = new System.Windows.Vector(x1 - x2, y1 - y2),
-                            secondVector = new System.Windows.Vector(x2 - canvasData.polygon.vertices[constraint.constrainedEdges[0].Item2].X,
-                            y2 - canvasData.polygon.vertices[constraint.constrainedEdges[0].Item2].Y);
+                            secondVector = new System.Windows.Vector(x1 - canvasData.polygon.vertices[constraint.constrainedEdges[0].Item2].X,
+                            y1 - canvasData.polygon.vertices[constraint.constrainedEdges[0].Item2].Y);
 
 
                         double angl = System.Windows.Vector.AngleBetween(firstVector, secondVector);
-                        double alp1 = DegreeToRadian(angl), alp2 = DegreeToRadian((180 - angl - constraint.angle));
+                        double alp1 = DegreeToRadian(constraint.angle), alp2 = DegreeToRadian(180 - angl - constraint.angle);
                         double u = x2 - x1, v = y2 - y1, a3 = Math.Sqrt(u * u + v * v);
                         double alp3 = Math.PI - alp1 - alp2;
                         double a2 = a3 * Math.Sin(alp2) / Math.Sin(alp3);

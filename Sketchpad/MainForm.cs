@@ -163,7 +163,8 @@ namespace Sketchpad
                 oneVertexAfter = (constraint.constrainedEdges[0].Item1 + 1) % canvasData.polygon.vertices.Count;
             }
 
-
+            if (canvasData.constraints.Find(x => x.constrainedEdges[0].Equals(constraint.constrainedEdges[0])) != null)
+                return false;
             ////REFACTOR
             //List<Tuple<int, int>> edge = new List<Tuple<int, int>>();
             //edge.Add(new Tuple<int, int>(oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count));// FIX ME possibly have to check inverted version of edge
@@ -261,50 +262,59 @@ namespace Sketchpad
                 oneVertexAfter = (constraint.constrainedEdges[1].Item1 + 1) % canvasData.polygon.vertices.Count;
             }
 
-            ////REFACTOR
-            //List<Tuple<int, int>> edge = new List<Tuple<int, int>>();
-            //edge.Add(new Tuple<int, int>(oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count));// FIX ME possibly have to check inverted version of edge
-            //Constraint forbiddenNeighbourConstraint = new Constraint(constraint.constraintMode, edge, -1);
-            //if (canvasData.constraints.Find(x => x.Equals(forbiddenNeighbourConstraint)) != null)
-            //    return false;
-
-            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, constraint.constraintMode, -1)
-                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore, constraint.constraintMode, -1)
-                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), oneVertexAfter, constraint.constraintMode, -1)
-                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), constraint.constraintMode, -1))
+            if (canvasData.constraints.Find(x => x.constrainedEdges[0].Equals(constraint.constrainedEdges[0]) || x.constrainedEdges[0].Equals(constraint.constrainedEdges[1])) != null)
                 return false;
 
-            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore2, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, constraint.constraintMode, -1)
-                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, oneVertexBefore2, constraint.constraintMode, -1)
-                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), oneVertexAfter2, constraint.constraintMode, -1)
-                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter2, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), constraint.constraintMode, -1))
+            if (IfConstraintExistsInNeighbourFixed(canvasData, oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), oneVertexAfter, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, oneVertexAfter, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), constraint.constraintMode, -1))
                 return false;
 
-            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, ConstraintMode.HorizontalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore, ConstraintMode.HorizontalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), oneVertexAfter, ConstraintMode.HorizontalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), ConstraintMode.HorizontalEdge, -1))
+            if (IfConstraintExistsInNeighbourFixed(canvasData, oneVertexBefore2, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, oneVertexBefore2, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), oneVertexAfter2, constraint.constraintMode, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, oneVertexAfter2, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), constraint.constraintMode, -1))
                 return false;
 
-            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore2, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, ConstraintMode.HorizontalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, oneVertexBefore2, ConstraintMode.HorizontalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), oneVertexAfter2, ConstraintMode.HorizontalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter2, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), ConstraintMode.HorizontalEdge, -1))
+            if (IfConstraintExistsInNeighbourFixed(canvasData, oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), oneVertexAfter, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, oneVertexAfter, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), ConstraintMode.HorizontalEdge, -1))
                 return false;
 
-            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, ConstraintMode.VerticalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore, ConstraintMode.VerticalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), oneVertexAfter, ConstraintMode.VerticalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), ConstraintMode.VerticalEdge, -1))
+            if (IfConstraintExistsInNeighbourFixed(canvasData, oneVertexBefore2, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, oneVertexBefore2, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), oneVertexAfter2, ConstraintMode.HorizontalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, oneVertexAfter2, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), ConstraintMode.HorizontalEdge, -1))
                 return false;
 
-            if (IfConstraintExistsInNeighbour(canvasData, oneVertexBefore2, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, ConstraintMode.VerticalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, oneVertexBefore2, ConstraintMode.VerticalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), oneVertexAfter2, ConstraintMode.VerticalEdge, -1)
-                || IfConstraintExistsInNeighbour(canvasData, oneVertexAfter2, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), ConstraintMode.VerticalEdge, -1))
+            if (IfConstraintExistsInNeighbourFixed(canvasData, oneVertexBefore, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, (oneVertexBefore + 1) % canvasData.polygon.vertices.Count, oneVertexBefore, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), oneVertexAfter, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, oneVertexAfter, Algorithms.mod(oneVertexAfter - 1, canvasData.polygon.vertices.Count), ConstraintMode.VerticalEdge, -1))
+                return false;
+
+            if (IfConstraintExistsInNeighbourFixed(canvasData, oneVertexBefore2, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, (oneVertexBefore2 + 1) % canvasData.polygon.vertices.Count, oneVertexBefore2, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), oneVertexAfter2, ConstraintMode.VerticalEdge, -1)
+                || IfConstraintExistsInNeighbourFixed(canvasData, oneVertexAfter2, Algorithms.mod(oneVertexAfter2 - 1, canvasData.polygon.vertices.Count), ConstraintMode.VerticalEdge, -1))
                 return false;
 
             return true;
+        }
+
+        private bool IfConstraintExistsInNeighbourFixed(CanvasData canvasData, int firstVertexOfEdge, int secondVertexOfEdge, ConstraintMode constraintMode, double angle)
+        {
+            List<Tuple<int, int>> edge = new List<Tuple<int, int>>();
+            edge.Add(new Tuple<int, int>(firstVertexOfEdge, secondVertexOfEdge));
+            Constraint forbiddenNeighbourConstraint = new Constraint(constraintMode, edge, -1);
+            if (canvasData.constraints.Find(x => x.constrainedEdges[0].Equals(forbiddenNeighbourConstraint.constrainedEdges[0])) != null ||
+                canvasData.constraints.Find(x => x.constrainedEdges[1].Equals(forbiddenNeighbourConstraint.constrainedEdges[0]) && x.constraintMode == forbiddenNeighbourConstraint.constraintMode) != null ||
+                canvasData.constraints.Find(x => x.constrainedEdges[0].Equals(forbiddenNeighbourConstraint.constrainedEdges[0]) && x.constraintMode == forbiddenNeighbourConstraint.constraintMode) != null)
+                return true;
+
+            return false;
         }
 
         private void deleteConstraintToolStripMenuItem_Click(object sender, EventArgs e)

@@ -40,18 +40,24 @@ namespace Sketchpad.Render
         {
             foreach(Constraint constraint in canvasData.constraints)
             {
-                if (constraint.constraintMode == Utils.ConstraintMode.FixedAngle)
-                    continue;
+
 
                 int point1 = constraint.constrainedEdges[0].Item1, point2 = constraint.constrainedEdges[0].Item2;
                 int x1 = canvasData.polygon.vertices[point1].X, x2 = canvasData.polygon.vertices[point2].X,
                     y1 = canvasData.polygon.vertices[point1].Y, y2 = canvasData.polygon.vertices[point2].Y;
                 Point drawPoint = new Point((x1 + x2) / 2, (y1 + y2) / 2);
 
+
+
                 if (constraint.constraintMode == Utils.ConstraintMode.HorizontalEdge)
                     DrawIcon(e, new Point(drawPoint.X + 5, drawPoint.Y - 10), new Point(drawPoint.X + 15, drawPoint.Y - 10));
                 if (constraint.constraintMode == Utils.ConstraintMode.VerticalEdge)
                     DrawIcon(e, new Point(drawPoint.X + 10, drawPoint.Y - 5), new Point(drawPoint.X + 10, drawPoint.Y + 5));
+                if (constraint.constraintMode == Utils.ConstraintMode.FixedAngle)
+                {
+                    DrawIcon(e, new Point(x1, y1 - 15), new Point(x1, y1 - 5));
+                    DrawIcon(e, new Point(x1 - 5, y1 - 10), new Point(x1 + 5, y1 - 10));
+                }
 
             }
         }
