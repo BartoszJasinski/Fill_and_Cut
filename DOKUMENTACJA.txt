@@ -1,0 +1,20 @@
+KLAWISZOLOGIA
+ Edycja:
+- by dodaæ wierzcho³ek klikamy LPM na canvasie
+- by usun¹æ istniej¹cy wierzcho³êk klikamy na niego LPM
+- by dodaæ wierzcho³ek w œrodku krawêdzi, klikamy w pobli¿u wybranej krawêdzi LPM
+- by przesun¹æ wierzcho³ek naciskamy Ctlr + LPM na wygranym wierzcho³ku
+ Relacje:
+- by dodaæ relacjê krawêdŸ pionowa/pozioma klikamy PPM przy wybranej krawêdzi i wybieramy odpowiedni¹ opcjê z menu kontekstowego
+- by dodaæ relacjê ustalonego k¹ta klikamy PPM przy wybranym wierzcho³u i wybieramy odpowiedni¹ opcjê z menu kontekstowego
+- by usun¹æ powy¿sze relacje postêpujemy analogicznie
+
+Przyjête za³orzenia i algorytm relacji:
+- Brak za³orzeñ
+- Relacjê przetrzymujê jako listê klas z informacjami o typie relacji oraz o indeksach wierzcho³ków wchodz¹cych w ska³ad 
+danej relacji
+- podczas próby dodawania przegl¹dam t¹ listê i sprawdzam czy mogê do niej dodaæ
+- podczas próby przesuwania wierzcho³ka, przegl¹dam ca³¹ listê i znajdujê relacje w których on uczestniczy, po czym w odpowiedni 
+sposób poruszam jego bezpoœrednimi s¹siadami w celu utrzymania relacji
+- podczas dodawania wierzcho³ka w œrodku krawêdzi próbujê usun¹æ ewenetualne relacje w których mo¿e uczestniczyæ dana krawêdŸ
+- podczas usuwania wierzcho³ka postêpujê analogicznie
