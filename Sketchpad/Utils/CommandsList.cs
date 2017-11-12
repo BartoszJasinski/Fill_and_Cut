@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Sketchpad.Data.StatePattern;
-using Sketchpad.Data;
+using FillCut.Data.StatePattern;
+using FillCut.Data;
 
-namespace Sketchpad.Utils
+namespace FillCut.Utils
 {
     class CommandsList
     {

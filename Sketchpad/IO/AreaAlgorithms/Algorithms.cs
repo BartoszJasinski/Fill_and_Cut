@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-using Sketchpad.Settings;
+using FillCut.Settings;
 
-namespace Sketchpad.Data.AreaAlgorithms
+namespace FillCut.Data.AreaAlgorithms
 {
     static class Algorithms
     {

@@ -52,7 +52,6 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Constraint.cs" />
     <Compile Include="Data\Polygon.cs" />
     <Compile Include="IO\AreaAlgorithms\Algorithms.cs" />
     <Compile Include="Data\CanvasData.cs" />

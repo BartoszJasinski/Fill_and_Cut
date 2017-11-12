@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sketchpad.Properties
+namespace FillCut.Properties
 {
 
 

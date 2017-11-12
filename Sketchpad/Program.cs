@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Sketchpad
+namespace FillCut
 {
     static class Program
     {

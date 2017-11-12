@@ -1,4 +1,4 @@
-﻿namespace Sketchpad.Utils
+﻿namespace FillCut.Utils
 {
     enum BehaviourMode
     {

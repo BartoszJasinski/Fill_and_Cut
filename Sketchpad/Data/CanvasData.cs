@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-using Sketchpad.Utils;
+using FillCut.Utils;
 
-namespace Sketchpad.Data
+namespace FillCut.Data
 {
     class CanvasData
     {
@@ -14,16 +14,9 @@ namespace Sketchpad.Data
         public int clickedVertexIndex { get; set; }
         public Point moveCoordinates { get; set; }
         public Tuple<int, int> clickedEdge { get; set; }
-        public List<Constraint> constraints { get; set; }
 
-        public CanvasData(BehaviourMode behaviourMode, Polygon polygon, Point clickCoordinates, int clickedVertexIndex, List<Constraint> constraints)
-        {
-            this.behaviourMode = behaviourMode;
-            this.polygon = polygon;
-            this.clickCoordinates = clickCoordinates;
-            this.clickedVertexIndex = clickedVertexIndex;
-            this.constraints = constraints;
-        }
+
+
 
         public CanvasData(BehaviourMode behaviourMode, Polygon polygon, Point clickCoordinates, int draggedVertexIndex)
         {
@@ -33,13 +26,11 @@ namespace Sketchpad.Data
             this.clickedVertexIndex = draggedVertexIndex;
         }
 
-        public CanvasData(BehaviourMode behaviourMode, Polygon polygon, Point clickCoordinates): this(behaviourMode, polygon, clickCoordinates, -1, new List<Constraint>())
-        { }
 
         public CanvasData(BehaviourMode behaviourMode, Point clickCoordinates) : this(behaviourMode, new Polygon(), clickCoordinates, -1)
         { }
 
-        public CanvasData(BehaviourMode doNothing): this(doNothing, new Polygon(), new Point(-1, -1))
+        public CanvasData(BehaviourMode doNothing): this(doNothing, new Polygon(), new Point(-1, -1), -1)
         { }
 
         public CanvasData(CanvasData canvasData)
@@ -48,24 +39,13 @@ namespace Sketchpad.Data
             polygon = canvasData.polygon;
             clickCoordinates= canvasData.clickCoordinates;
             clickedVertexIndex = canvasData.clickedVertexIndex;
-            constraints = canvasData.constraints;
+
         }
 
         public CanvasData(): this(BehaviourMode.DoNothing)
         { }
 
-        public static void DeletePossibleEdgeConstraint(CanvasData canvasData, ConstraintMode constraintMode, Tuple<int, int> edge, double angle = -1)
-        {
-            List<Tuple<int, int>> constrainedEdges = new List<Tuple<int, int>>();
-            constrainedEdges.Add(edge);
-            canvasData.constraints.Remove(new Constraint(constraintMode, constrainedEdges));
 
-            edge = new Tuple<int, int>(edge.Item2, edge.Item1);
-            constrainedEdges = new List<Tuple<int, int>>();
-            constrainedEdges.Add(edge);
-            canvasData.constraints.Remove(new Constraint(constraintMode, constrainedEdges));
-
-        }
 
 
 

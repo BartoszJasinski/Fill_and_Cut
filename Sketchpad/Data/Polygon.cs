@@ -2,19 +2,17 @@
 using System.Linq;
 using System.Drawing;
 
-using Sketchpad.Settings;
+using FillCut.Settings;
 
-namespace Sketchpad.Data
+namespace FillCut.Data
 {
     class Polygon
     {
         public List<Point> vertices { get; set; }
-        public List<Constraint> constraints { get; set; }
 
         public Polygon()
         {
             vertices = new List<Point>();
-            constraints = new List<Constraint>();
         }
 
 

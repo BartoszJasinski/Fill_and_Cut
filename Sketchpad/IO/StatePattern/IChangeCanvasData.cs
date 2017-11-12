@@ -1,4 +1,4 @@
-﻿namespace Sketchpad.Data.StatePattern
+﻿namespace FillCut.Data.StatePattern
 {
     interface IChangeCanvasData
     {

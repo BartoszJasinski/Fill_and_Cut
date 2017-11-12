@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace Sketchpad.Data.StatePattern
+namespace FillCut.Data.StatePattern
 {
     class PolygonMove : IChangeCanvasData
     {
