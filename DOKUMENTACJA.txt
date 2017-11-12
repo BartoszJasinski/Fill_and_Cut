@@ -3,7 +3,9 @@ KLAWISZOLOGIA
 - by dodaæ wierzcho³ek klikamy LPM na canvasie
 - by usun¹æ istniej¹cy wierzcho³êk klikamy na niego LPM
 - by dodaæ wierzcho³ek w œrodku krawêdzi, klikamy w pobli¿u wybranej krawêdzi LPM
-- by przesun¹æ wierzcho³ek naciskamy Ctlr + LPM na wygranym wierzcho³ku
+- by przesun¹æ wierzcho³ek naciskamy Ctrl + LPM na wygranym wierzcho³ku
+- by przesun¹æ wielok¹t, naciskamy Ctrl + LPM w œrodku bounding box
+
  Relacje:
 - by dodaæ relacjê krawêdŸ pionowa/pozioma klikamy PPM przy wybranej krawêdzi i wybieramy odpowiedni¹ opcjê z menu kontekstowego
 - by dodaæ relacjê ustalonego k¹ta klikamy PPM przy wybranym wierzcho³u i wybieramy odpowiedni¹ opcjê z menu kontekstowego
