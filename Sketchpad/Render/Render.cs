@@ -13,14 +13,63 @@ namespace FillCut.Render
         public static void PaintCanvas(PaintEventArgs e, CanvasData canvasData)
         {
             Graphics graphics = e.Graphics;
-            graphics.Clear(Color.White);
-            
-            foreach(Polygon polygon in canvasData.polygons)
-            {
-                DrawPolygon(e, polygon.vertices);
-                DrawBoundingBox(e, polygon.vertices);
-            }
+            //graphics.Clear(Color.White);
+
+
+            //SetPixel(e, Brushes.Black, new Point(470, 234));
+            //SetPixel(e, Brushes.Black, new Point(471, 234));
+            //SetPixel(e, Brushes.Black, new Point(470, 235));
+            //SetPixel(e, Brushes.Black, new Point(471, 235));
+
+            LambertModel(e);
+
+            //foreach (Polygon polygon in canvasData.polygons)
+            //{
+            //    DrawPolygon(e, polygon.vertices);
+            //    DrawBoundingBox(e, polygon.vertices);
+            //}
         }
+
+        private static void LambertModel(PaintEventArgs e)
+        {
+            Color lightColor = Color.Green, objectColor = Color.Blue;
+
+            Tuple<double, double, double> N = new Tuple<double, double, double>(0, 0, 1), L = new Tuple<double, double, double>(0, 0, 1);
+
+            for (int x = e.ClipRectangle.Left; x < e.ClipRectangle.Right; x++)
+                for (int y = e.ClipRectangle.Top; y < e.ClipRectangle.Bottom; y++)
+                {
+                    Brush brush = new SolidBrush(Color.FromArgb(255, LambertColor(lightColor.R, objectColor.R, N, L),
+                        LambertColor(lightColor.G, objectColor.G, N, L), LambertColor(lightColor.B, objectColor.B, N, L)));
+                    SetPixel(e, brush, new Point(x, y));
+                }
+        }
+
+        private static double ConvertColorsFromIntToDouble(int colorComponent)
+        {
+            return (colorComponent - 127) / 127;
+        }
+
+        private static int ConvertColorsFromDoubleToInt(double colorComponent)
+        {
+            return (int)(colorComponent + 1) / 2 * 255;
+        }
+
+        private static int LambertColor(int lightColorComponent, int objectColorComponent, Tuple<double, double, double> normalVector, Tuple<double, double, double> lightUnitVector)
+        {
+            return ConvertColorsFromDoubleToInt(ConvertColorsFromIntToDouble(lightColorComponent) * ConvertColorsFromIntToDouble(objectColorComponent) * Cos(normalVector, lightUnitVector)); 
+        }
+
+        private static double Cos(Tuple<double, double, double> N, Tuple<double, double, double> L)
+        {
+            return N.Item1 * L.Item1 + N.Item2 + L.Item2 + N.Item3 * L.Item3;
+        }
+
+        private static void SetPixel(PaintEventArgs e, Brush brush, Point point)
+        {
+            e.Graphics.FillRectangle(brush, point.X, point.Y, 1, 1);
+        }
+
         public static void DrawPolygon(PaintEventArgs e, List<Point> polygon)
         {
 
