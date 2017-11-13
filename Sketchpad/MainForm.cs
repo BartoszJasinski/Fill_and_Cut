@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Linq;
 
 using FillCut.Data;
 using FillCut.Utils;
@@ -13,10 +14,19 @@ namespace FillCut
     {
         private CanvasData canvasData = new CanvasData();
 
+        private void InitCanvasData()
+        {
+            canvasData.polygon.vertices.Add(new Point(100, 100));
+            canvasData.polygon.vertices.Add(new Point(150, 100));
+            canvasData.polygon.vertices.Add(new Point(300, 200));
+            canvasData.polygon.vertices.Add(new Point(200, 150));
+            canvasData.polygon.vertices.Add(new Point(500, 500));
+        }
+
         public MainForm()
         {
             InitializeComponent();
-
+            InitCanvasData();
         }
 
         private void canvas_MouseDown(object sender, MouseEventArgs e)
@@ -124,6 +134,76 @@ namespace FillCut
         {
             
             Render.Render.PaintCanvas(e, canvasData);
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void PolygonColorPictureBox_Click(object sender, EventArgs e)
+        {
+            PolygonColorColorDialog.ShowDialog();
+            PolygonColorPictureBox.BackColor = PolygonColorColorDialog.Color;
+        }
+
+        public class Vertex
+        {
+            public Point point { get; set; }
+            public int index { get; set; }
+
+            public Vertex(Point point, int index)
+            {
+                this.point = point;
+                this.index = index;
+            }
+
+        }
+
+        private void ScanLineFillVertexSort(CanvasData canvasData)
+        {
+            List<Vertex> polygonVertexes = new List<Vertex>();
+            for (int i = 0; i < canvasData.polygon.vertices.Count; i++)
+                polygonVertexes.Add(new Vertex(canvasData.polygon.vertices[i], i));
+            
+            polygonVertexes.OrderBy(v => v.point.Y);
+            int yMin = polygonVertexes[0].point.Y, yMax = polygonVertexes.Last().point.Y;
+
+            for (int i = yMin; i < yMax; i++) ;// TODO IMPLEMENT
+        }
+
+
+        //Algorithm for clipping polygon
+        private void SutherlandHodgmanAlgorithm()
+        {
+            if (CheckIfPolygonIsConvex(canvasData)) ;
+        }
+
+        private bool CheckIfPolygonIsConvex(CanvasData canvasData)
+        {
+            if (canvasData.polygon.vertices.Count < 3)
+                throw new Utils.NoVertexesException("Too small amount of vertices");
+
+            Point firstPoint = canvasData.polygon.vertices[0], secondPoint = canvasData.polygon.vertices[1], thirdPoint = canvasData.polygon.vertices[2];
+            int dx1 = secondPoint.X - firstPoint.X, dy1 = secondPoint.Y - firstPoint.X, dx2 = thirdPoint.X - secondPoint.Y, dy2 = thirdPoint.Y - secondPoint.Y;
+
+            System.Windows.Vector firstVector = new System.Windows.Vector(dx1, dy1), secondVector = new System.Windows.Vector(dx2, dy2);
+            double crossProduct = System.Windows.Vector.CrossProduct(firstVector, secondVector);
+
+            for(int i = 0; i < canvasData.polygon.vertices.Count; i++)
+            {
+                Point nextFirstPoint = canvasData.polygon.vertices[i], nextSecondPoint = canvasData.polygon.vertices[(i + 1) % canvasData.polygon.vertices.Count], 
+                    nextThirdPoint = canvasData.polygon.vertices[(i + 2) % canvasData.polygon.vertices.Count];
+                int nextDx1 = nextSecondPoint.X - nextFirstPoint.X, nextDy1 = nextSecondPoint.Y - nextFirstPoint.X, nextDx2 = nextThirdPoint.X - nextSecondPoint.Y, 
+                    nextDy2 = nextThirdPoint.Y - nextSecondPoint.Y;
+
+                System.Windows.Vector nextFirstVector = new System.Windows.Vector(nextDx1, nextDy1), nextSecondVector = new System.Windows.Vector(nextDx2, nextDy2);
+                if (Math.Sign(crossProduct) != Math.Sign(System.Windows.Vector.CrossProduct(nextFirstVector, nextSecondVector)))
+                    return false;
+            }
+
+
+            return true;
         }
 
     }
