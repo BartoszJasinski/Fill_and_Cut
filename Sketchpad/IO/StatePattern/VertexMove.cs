@@ -16,7 +16,7 @@ namespace FillCut.Data.StatePattern
 
         private void ChangeVertexPosition(CanvasData canvasData)
         {
-            canvasData.polygon.vertices[canvasData.clickedVertexIndex] = canvasData.clickCoordinates;
+            canvasData.polygons[canvasData.activePolygon].vertices[canvasData.clickedVertexIndex] = canvasData.clickCoordinates;
 
 
         }

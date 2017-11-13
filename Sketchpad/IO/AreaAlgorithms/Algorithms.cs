@@ -11,7 +11,7 @@ namespace FillCut.Data.AreaAlgorithms
         public static int FindIfClickedNearVertex(CanvasData canvasData, Point clickCoordinates)
         {
             // what if at least two vertexes are <= selectVertexAreaSize
-            List<Point> vertexesNearClick = canvasData.polygon.vertices.FindAll((Point p) => { return Math.Abs(p.X - clickCoordinates.X) <= ProgramSettings.selectVertexAreaSize && Math.Abs(p.Y - clickCoordinates.Y) <= ProgramSettings.selectVertexAreaSize; });
+            List<Point> vertexesNearClick = canvasData.polygons[canvasData.activePolygon].vertices.FindAll((Point p) => { return Math.Abs(p.X - clickCoordinates.X) <= ProgramSettings.selectVertexAreaSize && Math.Abs(p.Y - clickCoordinates.Y) <= ProgramSettings.selectVertexAreaSize; });
             int indexForMinValue = 0;
             //Searches for vertex which is nearest to click
             for (int i = 0; i < vertexesNearClick.Count; i++)
@@ -22,18 +22,18 @@ namespace FillCut.Data.AreaAlgorithms
             }
 
             if (vertexesNearClick.Count > 0)
-                return canvasData.polygon.vertices.IndexOf(vertexesNearClick[indexForMinValue]);
+                return canvasData.polygons[canvasData.activePolygon].vertices.IndexOf(vertexesNearClick[indexForMinValue]);
             else
                 return -1;
         }
 
         public static Tuple<int, int> FindIfClickedNearEdge(CanvasData canvasData, Point clickCoordinates)
         { 
-            if(canvasData.polygon.vertices.Count < 2)
+            if(canvasData.polygons[canvasData.activePolygon].vertices.Count < 2)
                 return new Tuple<int, int>(-1, -1);
 
             // what if 2 or more edges are <= selectEdgeAreaSize
-            List<Point> vertices = canvasData.polygon.vertices;
+            List<Point> vertices = canvasData.polygons[canvasData.activePolygon].vertices;
 
             for (int i = 0; i < vertices.Count; i++)
             {

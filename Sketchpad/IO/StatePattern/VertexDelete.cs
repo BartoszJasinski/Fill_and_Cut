@@ -11,7 +11,7 @@ namespace FillCut.Data.StatePattern
 
         private void DeleteVertex(CanvasData canvasData)
         {
-            canvasData.polygon.vertices.RemoveAt(canvasData.clickedVertexIndex);
+            canvasData.polygons[canvasData.activePolygon].vertices.RemoveAt(canvasData.clickedVertexIndex);
 
         }
     }

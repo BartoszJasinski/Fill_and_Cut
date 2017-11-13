@@ -10,10 +10,11 @@ namespace FillCut.Data.StatePattern
         }
         private void MovePolygon(CanvasData canvasData)
         {
-            for (int i = 0; i < canvasData.polygon.vertices.Count; i++)
+            for (int i = 0; i < canvasData.polygons[canvasData.activePolygon].vertices.Count; i++)
             {
-                Point newVerticePosition = new Point(canvasData.polygon.vertices[i].X + canvasData.moveCoordinates.X - canvasData.clickCoordinates.X, canvasData.polygon.vertices[i].Y + canvasData.moveCoordinates.Y - canvasData.clickCoordinates.Y);
-                canvasData.polygon.vertices[i] = newVerticePosition;
+                Point newVerticePosition = new Point(canvasData.polygons[canvasData.activePolygon].vertices[i].X + canvasData.moveCoordinates.X 
+                    - canvasData.clickCoordinates.X, canvasData.polygons[canvasData.activePolygon].vertices[i].Y + canvasData.moveCoordinates.Y - canvasData.clickCoordinates.Y);
+                canvasData.polygons[canvasData.activePolygon].vertices[i] = newVerticePosition;
 
             }
             canvasData.clickCoordinates = canvasData.moveCoordinates;

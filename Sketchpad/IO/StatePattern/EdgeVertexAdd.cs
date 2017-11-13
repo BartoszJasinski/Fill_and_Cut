@@ -20,9 +20,9 @@ namespace FillCut.Data.StatePattern
 
         private void AddVertexInTheMiddleOfEdge(CanvasData canvasData)
         {
-            int x = (canvasData.polygon.vertices[canvasData.clickedEdge.Item1].X + canvasData.polygon.vertices[canvasData.clickedEdge.Item2].X) / 2;
-            int y = (canvasData.polygon.vertices[canvasData.clickedEdge.Item1].Y + canvasData.polygon.vertices[canvasData.clickedEdge.Item2].Y) / 2;
-            canvasData.polygon.vertices.Insert(canvasData.clickedEdge.Item2, new Point(x, y));
+            int x = (canvasData.polygons[canvasData.activePolygon].vertices[canvasData.clickedEdge.Item1].X + canvasData.polygons[canvasData.activePolygon].vertices[canvasData.clickedEdge.Item2].X) / 2;
+            int y = (canvasData.polygons[canvasData.activePolygon].vertices[canvasData.clickedEdge.Item1].Y + canvasData.polygons[canvasData.activePolygon].vertices[canvasData.clickedEdge.Item2].Y) / 2;
+            canvasData.polygons[canvasData.activePolygon].vertices.Insert(canvasData.clickedEdge.Item2, new Point(x, y));
         }
        
     }

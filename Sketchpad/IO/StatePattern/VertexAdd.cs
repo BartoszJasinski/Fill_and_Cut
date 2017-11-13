@@ -6,9 +6,9 @@ namespace FillCut.Data.StatePattern
 {
     class VertexAdd: IChangeCanvasData
     {
-        public void Change(CanvasData parameters)
+        public void Change(CanvasData canvasData)
         {
-            AddVertexToPolygon(parameters.polygon.vertices, parameters.clickCoordinates);
+            AddVertexToPolygon(canvasData.polygons[canvasData.activePolygon].vertices, canvasData.clickCoordinates);
         }
 
         private void AddVertexToPolygon(List<Point> polygon, Point clickCoordinates)

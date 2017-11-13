@@ -15,8 +15,11 @@ namespace FillCut.Render
             Graphics graphics = e.Graphics;
             graphics.Clear(Color.White);
             
-            DrawPolygon(e, canvasData.polygon.vertices);
-            DrawBoundingBox(e, canvasData.polygon.vertices);
+            foreach(Polygon polygon in canvasData.polygons)
+            {
+                DrawPolygon(e, polygon.vertices);
+                DrawBoundingBox(e, polygon.vertices);
+            }
         }
         public static void DrawPolygon(PaintEventArgs e, List<Point> polygon)
         {

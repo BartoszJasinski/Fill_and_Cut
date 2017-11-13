@@ -16,11 +16,19 @@ namespace FillCut
 
         private void InitCanvasData()
         {
-            canvasData.polygon.vertices.Add(new Point(100, 100));
-            canvasData.polygon.vertices.Add(new Point(150, 100));
-            canvasData.polygon.vertices.Add(new Point(300, 200));
-            canvasData.polygon.vertices.Add(new Point(200, 150));
-            canvasData.polygon.vertices.Add(new Point(500, 500));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 100));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(150, 100));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(300, 200));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(200, 150));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(500, 500));
+
+            canvasData.polygons.Add(new Polygon());
+
+            canvasData.polygons[1].vertices.Add(new Point(200, 200));
+            canvasData.polygons[1].vertices.Add(new Point(250, 200));
+            canvasData.polygons[1].vertices.Add(new Point(400, 300));
+            canvasData.polygons[1].vertices.Add(new Point(300, 250));
+            canvasData.polygons[1].vertices.Add(new Point(600, 600));
         }
 
         public MainForm()
@@ -78,7 +86,7 @@ namespace FillCut
                 int clickedVertexIndex = -1;
                 if ((clickedVertexIndex = Algorithms.FindIfClickedNearVertex(canvasData, clickCoordinates)) == -1)
                 {
-                    if (Algorithms.CheckIfClickedInsideBoundingBox(Polygon.GetBoundingBox(canvasData.polygon.vertices), clickCoordinates))
+                    if (Algorithms.CheckIfClickedInsideBoundingBox(Polygon.GetBoundingBox(canvasData.polygons[canvasData.activePolygon].vertices), clickCoordinates))
                         return new CanvasData(canvasData) { behaviourMode = BehaviourMode.PolygonMove, clickCoordinates = clickCoordinates, moveCoordinates = clickCoordinates };
                     else
                         return new CanvasData(canvasData) { behaviourMode = BehaviourMode.DoNothing };
@@ -163,8 +171,8 @@ namespace FillCut
         private void ScanLineFillVertexSort(CanvasData canvasData)
         {
             List<Vertex> polygonVertexes = new List<Vertex>();
-            for (int i = 0; i < canvasData.polygon.vertices.Count; i++)
-                polygonVertexes.Add(new Vertex(canvasData.polygon.vertices[i], i));
+            for (int i = 0; i < canvasData.polygons[canvasData.activePolygon].vertices.Count; i++)
+                polygonVertexes.Add(new Vertex(canvasData.polygons[canvasData.activePolygon].vertices[i], i));
             
             polygonVertexes.OrderBy(v => v.point.Y);
             int yMin = polygonVertexes[0].point.Y, yMax = polygonVertexes.Last().point.Y;
@@ -176,24 +184,24 @@ namespace FillCut
         //Algorithm for clipping polygon
         private void SutherlandHodgmanAlgorithm()
         {
-            if (CheckIfPolygonIsConvex(canvasData)) ;
+            if (CheckIfPolygonIsConvex(canvasData.polygons[0])) ;
         }
 
-        private bool CheckIfPolygonIsConvex(CanvasData canvasData)
+        private bool CheckIfPolygonIsConvex(Polygon polygon)
         {
-            if (canvasData.polygon.vertices.Count < 3)
+            if (canvasData.polygons[canvasData.activePolygon].vertices.Count < 3)
                 throw new Utils.NoVertexesException("Too small amount of vertices");
 
-            Point firstPoint = canvasData.polygon.vertices[0], secondPoint = canvasData.polygon.vertices[1], thirdPoint = canvasData.polygon.vertices[2];
+            Point firstPoint = polygon.vertices[0], secondPoint = polygon.vertices[1], thirdPoint = polygon.vertices[2];
             int dx1 = secondPoint.X - firstPoint.X, dy1 = secondPoint.Y - firstPoint.X, dx2 = thirdPoint.X - secondPoint.Y, dy2 = thirdPoint.Y - secondPoint.Y;
 
             System.Windows.Vector firstVector = new System.Windows.Vector(dx1, dy1), secondVector = new System.Windows.Vector(dx2, dy2);
             double crossProduct = System.Windows.Vector.CrossProduct(firstVector, secondVector);
 
-            for(int i = 0; i < canvasData.polygon.vertices.Count; i++)
+            for(int i = 0; i < polygon.vertices.Count; i++)
             {
-                Point nextFirstPoint = canvasData.polygon.vertices[i], nextSecondPoint = canvasData.polygon.vertices[(i + 1) % canvasData.polygon.vertices.Count], 
-                    nextThirdPoint = canvasData.polygon.vertices[(i + 2) % canvasData.polygon.vertices.Count];
+                Point nextFirstPoint = polygon.vertices[i], nextSecondPoint = polygon.vertices[(i + 1) % polygon.vertices.Count], 
+                    nextThirdPoint = polygon.vertices[(i + 2) % polygon.vertices.Count];
                 int nextDx1 = nextSecondPoint.X - nextFirstPoint.X, nextDy1 = nextSecondPoint.Y - nextFirstPoint.X, nextDx2 = nextThirdPoint.X - nextSecondPoint.Y, 
                     nextDy2 = nextThirdPoint.Y - nextSecondPoint.Y;
 
