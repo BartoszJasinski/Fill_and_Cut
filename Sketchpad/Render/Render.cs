@@ -32,14 +32,14 @@ namespace FillCut.Render
 
         private static void LambertModel(PaintEventArgs e)
         {
-            Color lightColor = Color.Green, objectColor = Color.Blue;
+            Color lightColor = Color.FromArgb(0, 255, 64), objectColor = Color.FromArgb(0, 162, 232);
 
             Tuple<double, double, double> N = new Tuple<double, double, double>(0, 0, 1), L = new Tuple<double, double, double>(0, 0, 1);
 
             for (int x = e.ClipRectangle.Left; x < e.ClipRectangle.Right; x++)
                 for (int y = e.ClipRectangle.Top; y < e.ClipRectangle.Bottom; y++)
                 {
-                    Brush brush = new SolidBrush(Color.FromArgb(255, LambertColor(lightColor.R, objectColor.R, N, L),
+                    Brush brush = new SolidBrush(Color.FromArgb(LambertColor(lightColor.R, objectColor.R, N, L),
                         LambertColor(lightColor.G, objectColor.G, N, L), LambertColor(lightColor.B, objectColor.B, N, L)));
                     SetPixel(e, brush, new Point(x, y));
                 }
@@ -47,12 +47,13 @@ namespace FillCut.Render
 
         private static double ConvertColorsFromIntToDouble(int colorComponent)
         {
-            return (colorComponent - 127) / 127;
+            //return (colorComponent - 127) / 127;
+            return ((double)(colorComponent) / 255);
         }
 
         private static int ConvertColorsFromDoubleToInt(double colorComponent)
         {
-            return (int)(colorComponent + 1) / 2 * 255;
+            return (int)(colorComponent * 255);
         }
 
         private static int LambertColor(int lightColorComponent, int objectColorComponent, Tuple<double, double, double> normalVector, Tuple<double, double, double> lightUnitVector)
