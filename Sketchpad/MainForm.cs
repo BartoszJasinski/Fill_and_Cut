@@ -159,10 +159,7 @@ namespace FillCut
             Render.Render.PaintCanvas(e, canvasData, textureData);
         }
 
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
 
-        }
 
         private void PolygonColorPictureBox_Click(object sender, EventArgs e)
         {
