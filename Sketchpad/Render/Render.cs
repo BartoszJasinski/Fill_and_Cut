@@ -10,7 +10,7 @@ namespace FillCut.Render
 {
     static class Render
     {
-        public static void PaintCanvas(PaintEventArgs e, CanvasData canvasData)
+        public static void PaintCanvas(PaintEventArgs e, CanvasData canvasData, TextureData textureData)
         {
             Graphics graphics = e.Graphics;
             //graphics.Clear(Color.White);

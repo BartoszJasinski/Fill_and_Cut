@@ -13,6 +13,7 @@ namespace FillCut
     public partial class MainForm : Form
     {
         private CanvasData canvasData = new CanvasData();
+        private TextureData textureData = new TextureData();
 
         private void InitCanvasData()
         {
@@ -155,7 +156,7 @@ namespace FillCut
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
             
-            Render.Render.PaintCanvas(e, canvasData);
+            Render.Render.PaintCanvas(e, canvasData, textureData);
         }
 
         private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
@@ -171,13 +172,12 @@ namespace FillCut
 
         private void texturePictureBox_Click(object sender, EventArgs e)
         {
-            using (var selectFileDialog = new OpenFileDialog())
+            using (var textureFileDialog = new OpenFileDialog())
             {
-                if (selectFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    //fileName.Text =
-                        //selectFileDialog.FileName;
-                }
+                textureFileDialog.Filter = "JPG File (.jpg)|*.jpg|PNG File (.png)|*.png";
+
+                if (textureFileDialog.ShowDialog() == DialogResult.OK)
+                    textureData.texture = new Bitmap(textureFileDialog.FileName);
             }
         }
 

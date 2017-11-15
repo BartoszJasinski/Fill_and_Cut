@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\Polygon.cs" />
+    <Compile Include="Data\TextureData.cs" />
     <Compile Include="IO\AreaAlgorithms\Algorithms.cs" />
     <Compile Include="Data\CanvasData.cs" />
     <Compile Include="IO\StatePattern\DoNothing.cs" />
