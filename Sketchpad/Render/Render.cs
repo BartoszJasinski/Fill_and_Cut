@@ -1,33 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
 using FillCut.Settings;
 using FillCut.Data;
-using System;
+using FillCut.Render.Algorithms;
 
 namespace FillCut.Render
 {
     static class Render
     {
-        public static void PaintCanvas(PaintEventArgs e, CanvasData canvasData, TextureData textureData)
+        public static void PaintCanvas(object sender, PaintEventArgs e, CanvasData canvasData, TextureData textureData)
         {
+            //PictureBox canvas = (PictureBox)sender;
             Graphics graphics = e.Graphics;
             //graphics.Clear(Color.White);
 
+            //((Bitmap)canvas.Image).SetPixel(470, 234, Color.Black);
+            //((Bitmap)canvas.Image).SetPixel(471, 234, Color.Black);
+            //((Bitmap)canvas.Image).SetPixel(470, 235, Color.Black);
+            //((Bitmap)canvas.Image).SetPixel(471, 235, Color.Black);
 
             //SetPixel(e, Brushes.Black, new Point(470, 234));
             //SetPixel(e, Brushes.Black, new Point(471, 234));
             //SetPixel(e, Brushes.Black, new Point(470, 235));
             //SetPixel(e, Brushes.Black, new Point(471, 235));
 
-            LambertModel(e);
+            //LambertReflectance.LambertModel(e, textureData);
 
-            //foreach (Polygon polygon in canvasData.polygons)
-            //{
-            //    DrawPolygon(e, polygon.vertices);
-            //    DrawBoundingBox(e, polygon.vertices);
-            //}
+            foreach (Polygon polygon in canvasData.polygons)
+            {
+                DrawPolygon(e, polygon.vertices);
+                DrawBoundingBox(e, polygon.vertices);
+            }
         }
 
         private static void LambertModel(PaintEventArgs e)

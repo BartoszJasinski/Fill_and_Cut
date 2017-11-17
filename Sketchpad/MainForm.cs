@@ -44,10 +44,46 @@ namespace FillCut
             //canvasData.polygons[1].vertices.Add(new Point(600, 600));
         }
 
+        private void InitTextureData()
+        {
+            //textureData.lightColor = Color.FromArgb(0, 255, 64);
+
+            //textureData.objectColor = Color.FromArgb(0, 162, 232);
+            //textureData.polygonColorMode = PolygonColorMode.ConstantColor;
+
+            //textureData.normalVectorMode = NormalVectorMode.ConstantNormalVector;
+
+            //textureData.lightVectorMode = LightVectorMode.ConstantLightVector;
+
+            //textureData.vectorDisorderMode = VectorDisorderMode.LackOfDisorder;
+
+            textureData.lightColor = Color.FromArgb(0, 255, 64);
+
+            textureData.texture = new Bitmap(@"C:\Users\bartosz\Desktop\crupled_white_paper_texture.jpeg");
+            textureData.polygonColorMode = PolygonColorMode.TextureColor;
+
+            textureData.normalMap = new Bitmap(@"C:\Users\bartosz\Desktop\world_normal_map.jpg");
+            textureData.normalVectorMode = NormalVectorMode.TextureNormalVector;
+
+            textureData.sphereRadius = 10;
+            textureData.lightVectorMode = LightVectorMode.MovingLightVector;
+
+            textureData.heightMap = new Bitmap(@"C:\Users\bartosz\Desktop\stone_wall_height_map.jpg");
+            textureData.vectorDisorderMode = VectorDisorderMode.HeightMapDisorder;
+
+        }
+
+        public void Init()
+        {
+            InitCanvasData();
+            InitTextureData();
+
+        }
+
         public MainForm()
         {
             InitializeComponent();
-            InitCanvasData();
+            Init();
         }
 
         private void canvas_MouseDown(object sender, MouseEventArgs e)
@@ -155,8 +191,13 @@ namespace FillCut
 
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
-            
-            Render.Render.PaintCanvas(e, canvasData, textureData);
+
+            Render.Render.PaintCanvas(sender, e, canvasData, textureData);
+            //((Bitmap)canvas.Image).SetPixel(470, 234, Color.Black);
+            //((Bitmap)canvas.Image).SetPixel(471, 234, Color.Black);
+            //((Bitmap)canvas.Image).SetPixel(470, 235, Color.Black);
+            //((Bitmap)canvas.Image).SetPixel(471, 235, Color.Black);
+
         }
 
 
