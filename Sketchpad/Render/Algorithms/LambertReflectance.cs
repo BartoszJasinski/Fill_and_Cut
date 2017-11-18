@@ -16,29 +16,33 @@ namespace FillCut.Render.Algorithms
     class LambertReflectance
     {
 
-        public static void LambertModel(PaintEventArgs e, TextureData textureData)
+        public static void LambertModel(PictureBox canvas, PaintEventArgs e, TextureData textureData)
         {
-
-            ProcessUsingLockbits(new Bitmap(e.ClipRectangle.Right - e.ClipRectangle.Left, e.ClipRectangle.Bottom - e.ClipRectangle.Top), e, textureData);
-            //Color lightColor = textureData.GetLightColor();
-
-
-            //for (int x = e.ClipRectangle.Left; x < e.ClipRectangle.Right; x++)
-            //    for (int y = e.ClipRectangle.Top; y < e.ClipRectangle.Bottom; y++)
-            //    {
-            //        Color objectColorAtGivenPoint = textureData.GetObjectColorAtGivenPoint(x, y);
-            //        Tuple<double, double, double> N_prim = CalculateNormalVectorWithDisorder(textureData, x, y);
-            //        Tuple<double, double, double> L = normalizeVector(textureData.GetLightVector(textureData.stopWatch.Elapsed));
+            //if (canvas.Image != null) canvas.Image.Dispose();
+            //canvas.Image = new Bitmap(canvas.Width, canvas.Height);
+            //canvas.Image = ProcessUsingLockbits((Bitmap)canvas.Image, e, textureData);
 
 
-            //        Brush brush = new SolidBrush(Color.FromArgb(LambertColor(lightColor.R, objectColorAtGivenPoint.R, N_prim, L),
-            //            LambertColor(lightColor.G, objectColorAtGivenPoint.G, N_prim, L), LambertColor(lightColor.B, objectColorAtGivenPoint.B, N_prim, L)));
-            //        SetPixel(e, brush, new Point(x, y));
-            //    }
+
+            Color lightColor = textureData.GetLightColor();
+
+
+            for (int x = e.ClipRectangle.Left; x < e.ClipRectangle.Right - 300; x++)
+                for (int y = e.ClipRectangle.Top; y < e.ClipRectangle.Bottom - 400; y++)
+                {
+                    Color objectColorAtGivenPoint = textureData.GetObjectColorAtGivenPoint(x, y);
+                    Tuple<double, double, double> N_prim = CalculateNormalVectorWithDisorder(textureData, x, y);
+                    Tuple<double, double, double> L = normalizeVector(textureData.GetLightVector(textureData.stopWatch.Elapsed));
+
+
+                    Brush brush = new SolidBrush(Color.FromArgb(LambertColor(lightColor.R, objectColorAtGivenPoint.R, N_prim, L),
+                        LambertColor(lightColor.G, objectColorAtGivenPoint.G, N_prim, L), LambertColor(lightColor.B, objectColorAtGivenPoint.B, N_prim, L)));
+                    SetPixel(e, brush, new Point(x, y));
+                }
         }
 
 
-        private static void ProcessUsingLockbits(Bitmap processedBitmap, PaintEventArgs e, TextureData textureData)
+        private static Image ProcessUsingLockbits(Bitmap processedBitmap, PaintEventArgs e, TextureData textureData)
         {
             BitmapData bitmapData = processedBitmap.LockBits(new Rectangle(0, 0, processedBitmap.Width, processedBitmap.Height), ImageLockMode.ReadWrite, processedBitmap.PixelFormat);
 
@@ -51,22 +55,30 @@ namespace FillCut.Render.Algorithms
             int widthInBytes = bitmapData.Width * bytesPerPixel;
 
             Color lightColor = textureData.GetLightColor();
-
-            for (int y = 0; y < heightInPixels; y++)
+            for (int y = 0, j = 0; y < heightInPixels; y++, j++)
             {
                 int currentLine = y * bitmapData.Stride;
-                for (int x = 0; x < widthInBytes; x = x + bytesPerPixel)
+                for (int x = 0, i = 0; x < widthInBytes; x = x + bytesPerPixel, i++)
                 {
-                    Color objectColorAtGivenPoint = textureData.GetObjectColorAtGivenPoint(x, y);
-                    Tuple<double, double, double> N_prim = CalculateNormalVectorWithDisorder(textureData, x, y);
+
+                    Color objectColorAtGivenPoint = textureData.GetObjectColorAtGivenPoint(i, j);
+                    Tuple<double, double, double> N_prim = CalculateNormalVectorWithDisorder(textureData, i, j);
                     Tuple<double, double, double> L = normalizeVector(textureData.GetLightVector(textureData.stopWatch.Elapsed));
-
-
-                    //Brush brush = new SolidBrush(Color.FromArgb(LambertColor(lightColor.R, objectColorAtGivenPoint.R, N_prim, L),
-                        //LambertColor(lightColor.G, objectColorAtGivenPoint.G, N_prim, L), LambertColor(lightColor.B, objectColorAtGivenPoint.B, N_prim, L)));
 
                     Color c = Color.FromArgb(LambertColor(lightColor.R, objectColorAtGivenPoint.R, N_prim, L),
                                            LambertColor(lightColor.G, objectColorAtGivenPoint.G, N_prim, L), LambertColor(lightColor.B, objectColorAtGivenPoint.B, N_prim, L));
+
+
+                    //Color objectColorAtGivenPoint = textureData.GetObjectColorAtGivenPoint(x, y);
+                    //Tuple<double, double, double> N_prim = CalculateNormalVectorWithDisorder(textureData, x, y);
+                    //Tuple<double, double, double> L = normalizeVector(textureData.GetLightVector(textureData.stopWatch.Elapsed));
+
+
+                    ////Brush brush = new SolidBrush(Color.FromArgb(LambertColor(lightColor.R, objectColorAtGivenPoint.R, N_prim, L),
+                    ////LambertColor(lightColor.G, objectColorAtGivenPoint.G, N_prim, L), LambertColor(lightColor.B, objectColorAtGivenPoint.B, N_prim, L)));
+
+                    //Color c = Color.FromArgb(LambertColor(lightColor.R, objectColorAtGivenPoint.R, N_prim, L),
+                    //                       LambertColor(lightColor.G, objectColorAtGivenPoint.G, N_prim, L), LambertColor(lightColor.B, objectColorAtGivenPoint.B, N_prim, L));
 
 
 
@@ -86,7 +98,7 @@ namespace FillCut.Render.Algorithms
             Marshal.Copy(pixels, 0, ptrFirstPixel, pixels.Length);
             processedBitmap.UnlockBits(bitmapData);
 
-            e.Graphics.DrawImage(processedBitmap, 0, 0);
+            return processedBitmap as Image;
         }
 
         //private void ProcessUsingLockbitsAndUnsafeAndParallel(Bitmap processedBitmap)

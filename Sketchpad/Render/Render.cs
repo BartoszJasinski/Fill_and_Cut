@@ -13,9 +13,9 @@ namespace FillCut.Render
     {
         public static void PaintCanvas(object sender, PaintEventArgs e, CanvasData canvasData, TextureData textureData)
         {
-            //PictureBox canvas = (PictureBox)sender;
+            PictureBox canvas = (PictureBox)sender;
             Graphics graphics = e.Graphics;
-            //graphics.Clear(Color.White);
+            graphics.Clear(Color.White);
 
             //((Bitmap)canvas.Image).SetPixel(470, 234, Color.Black);
             //((Bitmap)canvas.Image).SetPixel(471, 234, Color.Black);
@@ -27,7 +27,11 @@ namespace FillCut.Render
             //SetPixel(e, Brushes.Black, new Point(470, 235));
             //SetPixel(e, Brushes.Black, new Point(471, 235));
 
-            //LambertReflectance.LambertModel(e, textureData);
+            //LambertReflectance.LambertModel(canvas, e, textureData);
+
+
+            PolygonFilling.ScanLineFillVertexSort(e, canvasData);
+
 
             foreach (Polygon polygon in canvasData.polygons)
             {

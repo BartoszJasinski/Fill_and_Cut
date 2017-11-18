@@ -17,11 +17,11 @@ namespace FillCut
 
         private void InitCanvasData()
         {
-            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 100));
-            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(150, 100));
-            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(300, 200));
-            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(200, 250));
-            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 200));
+            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 100));
+            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(150, 100));
+            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(300, 200));
+            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(200, 250));
+            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 200));
 
             //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 100));
             //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(150, 100));
@@ -42,6 +42,16 @@ namespace FillCut
             //canvasData.polygons[1].vertices.Add(new Point(400, 300));
             //canvasData.polygons[1].vertices.Add(new Point(300, 250));
             //canvasData.polygons[1].vertices.Add(new Point(600, 600));
+
+
+
+
+
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 100));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(150, 137));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(300, 157));
+
+
         }
 
         private void InitTextureData()
@@ -57,18 +67,32 @@ namespace FillCut
 
             //textureData.vectorDisorderMode = VectorDisorderMode.LackOfDisorder;
 
-            textureData.lightColor = Color.FromArgb(0, 255, 64);
+            //textureData.lightColor = Color.FromArgb(255, 255, 255);
 
-            textureData.texture = new Bitmap(@"C:\Users\bartosz\Desktop\crupled_white_paper_texture.jpeg");
+            //textureData.texture = new Bitmap(@"C:\Users\bartosz\Desktop\crupled_white_paper_texture.jpeg");
+            //textureData.polygonColorMode = PolygonColorMode.TextureColor;
+
+            //textureData.normalMap = new Bitmap(@"C:\Users\bartosz\Desktop\world_normal_map.jpg");
+            //textureData.normalVectorMode = NormalVectorMode.TextureNormalVector;
+
+            //textureData.sphereRadius = 10;
+            //textureData.lightVectorMode = LightVectorMode.MovingLightVector;
+
+            //textureData.heightMap = new Bitmap(@"C:\Users\bartosz\Desktop\stone_wall_height_map.jpg");
+            //textureData.vectorDisorderMode = VectorDisorderMode.HeightMapDisorder;
+
+            textureData.lightColor = Color.FromArgb(255, 255, 255);
+
+            textureData.texture = new Bitmap(@"C:\Users\bartosz\Desktop\wood_texture.jpg");
             textureData.polygonColorMode = PolygonColorMode.TextureColor;
 
-            textureData.normalMap = new Bitmap(@"C:\Users\bartosz\Desktop\world_normal_map.jpg");
+            textureData.normalMap = new Bitmap(@"C:\Users\bartosz\Desktop\wall_normal_map.png");
             textureData.normalVectorMode = NormalVectorMode.TextureNormalVector;
 
             textureData.sphereRadius = 10;
             textureData.lightVectorMode = LightVectorMode.MovingLightVector;
 
-            textureData.heightMap = new Bitmap(@"C:\Users\bartosz\Desktop\stone_wall_height_map.jpg");
+            textureData.heightMap = new Bitmap(@"C:\Users\bartosz\Desktop\brick_height_map.jpg");
             textureData.vectorDisorderMode = VectorDisorderMode.HeightMapDisorder;
 
         }
@@ -191,13 +215,8 @@ namespace FillCut
 
         private void canvas_Paint(object sender, PaintEventArgs e)
         {
-
+            int a = canvas.Height;
             Render.Render.PaintCanvas(sender, e, canvasData, textureData);
-            //((Bitmap)canvas.Image).SetPixel(470, 234, Color.Black);
-            //((Bitmap)canvas.Image).SetPixel(471, 234, Color.Black);
-            //((Bitmap)canvas.Image).SetPixel(470, 235, Color.Black);
-            //((Bitmap)canvas.Image).SetPixel(471, 235, Color.Black);
-
         }
 
 
@@ -220,35 +239,7 @@ namespace FillCut
         }
 
         ////////////////////////////////////////////////////////////////////////////
-        public class Vertex
-        {
-            public Point point { get; set; }
-            public int index { get; set; }
 
-            public Vertex(Point point, int index)
-            {
-                this.point = point;
-                this.index = index;
-            }
-
-        }
-
-        private void ScanLineFillVertexSort(CanvasData canvasData)
-        {
-            List<Vertex> polygonVertexes = new List<Vertex>();
-            for (int i = 0; i < canvasData.polygons[canvasData.activePolygon].vertices.Count; i++)
-                polygonVertexes.Add(new Vertex(canvasData.polygons[canvasData.activePolygon].vertices[i], i));
-            
-            polygonVertexes.OrderBy(v => v.point.Y);
-            int yMin = polygonVertexes[0].point.Y, yMax = polygonVertexes.Last().point.Y;
-
-            List<Vertex> AET = new List<Vertex>();
-
-            for (int i = yMin; i < yMax; i++) ;// TODO IMPLEMENT
-
-
-
-        }
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         #region Class: Edge

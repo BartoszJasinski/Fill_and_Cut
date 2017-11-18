@@ -44,7 +44,7 @@ namespace FillCut.Data
             if (polygonColorMode == PolygonColorMode.ConstantColor)
                 return objectColor;
             else
-                return texture.GetPixel(x, y);
+                return texture.GetPixel(x % texture.Width, y % texture.Height);
         }
 
         public Tuple<double, double, double> GetLightVector(TimeSpan time)
@@ -65,7 +65,7 @@ namespace FillCut.Data
             if (normalVectorMode == NormalVectorMode.ConstantNormalVector)
                 return constantNormalVector;
             else
-                return normalMap.GetPixel(x, y);
+                return normalMap.GetPixel(x % normalMap.Width, y % normalMap.Height);
         }
 
         public Color GetHeightMapColorValueAtGivenPoint(int x, int y)
@@ -73,14 +73,14 @@ namespace FillCut.Data
             if (vectorDisorderMode == VectorDisorderMode.LackOfDisorder)
                 return D;
 
-            if (x > normalMap.Size.Width && y > normalMap.Size.Height)
-                return normalMap.GetPixel(normalMap.Size.Width - 1, normalMap.Size.Height - 1); //CHECK IF normalMap.Size.Width - 1, normalMap.Size.Height - 1 or normalMap.Size.Width, normalMap.Size.Height 
-            else if (x > normalMap.Size.Width)
-                return normalMap.GetPixel(normalMap.Size.Width - 1, y);
-            else if (y > normalMap.Size.Height)
-                return normalMap.GetPixel(x, normalMap.Size.Height);
+            if (x > heightMap.Size.Width && y > heightMap.Size.Height)
+                return heightMap.GetPixel(heightMap.Size.Width - 1, heightMap.Size.Height - 1); //CHECK IF normalMap.Size.Width - 1, normalMap.Size.Height - 1 or normalMap.Size.Width, normalMap.Size.Height 
+            else if (x > heightMap.Size.Width)
+                return heightMap.GetPixel(heightMap.Size.Width - 1, y % heightMap.Height);
+            else if (y > heightMap.Size.Height)
+                return heightMap.GetPixel(x % heightMap.Width, heightMap.Size.Height - 1);
 
-            return normalMap.GetPixel(x, y);
+            return heightMap.GetPixel(x % heightMap.Width, y % heightMap.Height);
         }
 
 
