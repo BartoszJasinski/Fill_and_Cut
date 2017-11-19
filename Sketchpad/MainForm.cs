@@ -3,6 +3,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+
 
 using FillCut.Data;
 using FillCut.Utils;
@@ -224,7 +227,10 @@ namespace FillCut
         private void PolygonColorPictureBox_Click(object sender, EventArgs e)
         {
             PolygonColorColorDialog.ShowDialog();
+            textureData.objectColor = PolygonColorColorDialog.Color;
+            textureData.polygonColorMode = PolygonColorMode.ConstantColor;
             PolygonColorPictureBox.BackColor = PolygonColorColorDialog.Color;
+
         }
 
         private void texturePictureBox_Click(object sender, EventArgs e)
@@ -234,7 +240,109 @@ namespace FillCut
                 textureFileDialog.Filter = "JPG File (.jpg)|*.jpg|PNG File (.png)|*.png";
 
                 if (textureFileDialog.ShowDialog() == DialogResult.OK)
+                {
                     textureData.texture = new Bitmap(textureFileDialog.FileName);
+                    textureData.polygonColorMode = PolygonColorMode.TextureColor;
+                    texturePictureBox.Image = ResizeImage(textureData.texture, texturePictureBox.Width, texturePictureBox.Height);
+                }
+            }
+        }
+
+        public static Bitmap ResizeImage(Image image, int width, int height)
+        {
+            var destRect = new Rectangle(0, 0, width, height);
+            var destImage = new Bitmap(width, height);
+
+            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+            using (var graphics = Graphics.FromImage(destImage))
+            {
+                graphics.CompositingMode = CompositingMode.SourceCopy;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                using (var wrapMode = new ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+                }
+            }
+
+            return destImage;
+        }
+
+        private void lightColorPictureBox_Click(object sender, EventArgs e)
+        {
+            LightColorColorDialog.ShowDialog();
+            textureData.lightColor = LightColorColorDialog.Color;
+            lightColorPictureBox.BackColor = LightColorColorDialog.Color;
+
+        }
+
+
+        private void normalMapPictureBox_Click(object sender, EventArgs e)
+        {
+            using (var normalMapFileDialog = new OpenFileDialog())
+            {
+                normalMapFileDialog.Filter = "JPG File (.jpg)|*.jpg|PNG File (.png)|*.png";
+
+                if (normalMapFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    textureData.normalMap = new Bitmap(normalMapFileDialog.FileName);
+                    normalMapPictureBox.Image = ResizeImage(textureData.normalMap, normalMapPictureBox.Width, normalMapPictureBox.Height);
+                }
+            }
+        }
+
+        private void constantNormalVectorRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            textureData.normalVectorMode = NormalVectorMode.ConstantNormalVector;
+        }
+
+        private void normalMapRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            textureData.normalVectorMode = NormalVectorMode.TextureNormalVector;
+
+        }
+
+        private void constatnLightVectorRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            textureData.lightVectorMode = LightVectorMode.ConstantLightVector;
+        }
+
+        private void movingLightVectorRadioButton4_CheckedChanged(object sender, EventArgs e)
+        {
+            textureData.lightVectorMode = LightVectorMode.MovingLightVector;
+        }
+
+        private void movingLightVectorTextBox_TextChanged(object sender, EventArgs e)
+        {
+            textureData.sphereRadius = double.Parse(movingLightVectorTextBox.Text);
+        }
+
+        private void lackOfDisorderRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            textureData.vectorDisorderMode = VectorDisorderMode.LackOfDisorder;
+        }
+
+        private void heightMapRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            textureData.vectorDisorderMode = VectorDisorderMode.HeightMapDisorder;
+        }
+
+        private void heightMapPictureBox_Click(object sender, EventArgs e)
+        {
+             using (var heightMapFileDialog = new OpenFileDialog())
+            {
+                heightMapFileDialog.Filter = "JPG File (.jpg)|*.jpg|PNG File (.png)|*.png";
+
+                if (heightMapFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    textureData.heightMap = new Bitmap(heightMapFileDialog.FileName);
+                    heightMapPictureBox.Image = ResizeImage(textureData.heightMap, heightMapPictureBox.Width, heightMapPictureBox.Height);
+                }
             }
         }
 
@@ -511,7 +619,6 @@ namespace FillCut
 
             return true;
         }
-
 
 
     }

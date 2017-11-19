@@ -40,23 +40,24 @@
             this.label4 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label5 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lightColorPictureBox = new System.Windows.Forms.PictureBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.constantNormalVectorRadioButton = new System.Windows.Forms.RadioButton();
+            this.normalMapRadioButton = new System.Windows.Forms.RadioButton();
+            this.normalMapPictureBox = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.constatnLightVectorRadioButton = new System.Windows.Forms.RadioButton();
+            this.movingLightVectorRadioButton4 = new System.Windows.Forms.RadioButton();
+            this.movingLightVectorTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.lackOfDisorderRadioButton = new System.Windows.Forms.RadioButton();
+            this.heightMapRadioButton = new System.Windows.Forms.RadioButton();
+            this.heightMapPictureBox = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.PolygonColorColorDialog = new System.Windows.Forms.ColorDialog();
+            this.LightColorColorDialog = new System.Windows.Forms.ColorDialog();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -64,12 +65,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.PolygonColorPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.texturePictureBox)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.normalMapPictureBox)).BeginInit();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.heightMapPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // canvas
@@ -168,6 +169,7 @@
             // 
             // texturePictureBox
             // 
+            this.texturePictureBox.BackColor = System.Drawing.Color.White;
             this.texturePictureBox.Location = new System.Drawing.Point(125, 52);
             this.texturePictureBox.Name = "texturePictureBox";
             this.texturePictureBox.Size = new System.Drawing.Size(60, 44);
@@ -222,7 +224,7 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.Controls.Add(this.label5, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.pictureBox1, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lightColorPictureBox, 1, 0);
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 146);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
@@ -240,13 +242,15 @@
             this.label5.Text = "I_L";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // pictureBox1
+            // lightColorPictureBox
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(125, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(60, 44);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.lightColorPictureBox.BackColor = System.Drawing.Color.White;
+            this.lightColorPictureBox.Location = new System.Drawing.Point(125, 3);
+            this.lightColorPictureBox.Name = "lightColorPictureBox";
+            this.lightColorPictureBox.Size = new System.Drawing.Size(60, 44);
+            this.lightColorPictureBox.TabIndex = 1;
+            this.lightColorPictureBox.TabStop = false;
+            this.lightColorPictureBox.Click += new System.EventHandler(this.lightColorPictureBox_Click);
             // 
             // label6
             // 
@@ -263,9 +267,9 @@
             this.tableLayoutPanel5.ColumnCount = 2;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Controls.Add(this.radioButton1, 0, 0);
-            this.tableLayoutPanel5.Controls.Add(this.radioButton2, 0, 1);
-            this.tableLayoutPanel5.Controls.Add(this.pictureBox2, 1, 1);
+            this.tableLayoutPanel5.Controls.Add(this.constantNormalVectorRadioButton, 0, 0);
+            this.tableLayoutPanel5.Controls.Add(this.normalMapRadioButton, 0, 1);
+            this.tableLayoutPanel5.Controls.Add(this.normalMapPictureBox, 1, 1);
             this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 222);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
@@ -274,45 +278,49 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(244, 94);
             this.tableLayoutPanel5.TabIndex = 14;
             // 
-            // radioButton1
+            // constantNormalVectorRadioButton
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(3, 3);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(89, 17);
-            this.radioButton1.TabIndex = 1;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Stały [0, 0, 1]";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.constantNormalVectorRadioButton.AutoSize = true;
+            this.constantNormalVectorRadioButton.Location = new System.Drawing.Point(3, 3);
+            this.constantNormalVectorRadioButton.Name = "constantNormalVectorRadioButton";
+            this.constantNormalVectorRadioButton.Size = new System.Drawing.Size(89, 17);
+            this.constantNormalVectorRadioButton.TabIndex = 1;
+            this.constantNormalVectorRadioButton.TabStop = true;
+            this.constantNormalVectorRadioButton.Text = "Stały [0, 0, 1]";
+            this.constantNormalVectorRadioButton.UseVisualStyleBackColor = true;
+            this.constantNormalVectorRadioButton.CheckedChanged += new System.EventHandler(this.constantNormalVectorRadioButton_CheckedChanged);
             // 
-            // radioButton2
+            // normalMapRadioButton
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(3, 41);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(116, 17);
-            this.radioButton2.TabIndex = 2;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Z tekstury NormalMap";
-            this.radioButton2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.normalMapRadioButton.AutoSize = true;
+            this.normalMapRadioButton.Location = new System.Drawing.Point(3, 41);
+            this.normalMapRadioButton.Name = "normalMapRadioButton";
+            this.normalMapRadioButton.Size = new System.Drawing.Size(116, 17);
+            this.normalMapRadioButton.TabIndex = 2;
+            this.normalMapRadioButton.TabStop = true;
+            this.normalMapRadioButton.Text = "Z tekstury NormalMap";
+            this.normalMapRadioButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.normalMapRadioButton.UseVisualStyleBackColor = true;
+            this.normalMapRadioButton.CheckedChanged += new System.EventHandler(this.normalMapRadioButton_CheckedChanged);
             // 
-            // pictureBox2
+            // normalMapPictureBox
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(125, 41);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(60, 44);
-            this.pictureBox2.TabIndex = 3;
-            this.pictureBox2.TabStop = false;
+            this.normalMapPictureBox.BackColor = System.Drawing.Color.White;
+            this.normalMapPictureBox.Location = new System.Drawing.Point(125, 41);
+            this.normalMapPictureBox.Name = "normalMapPictureBox";
+            this.normalMapPictureBox.Size = new System.Drawing.Size(60, 44);
+            this.normalMapPictureBox.TabIndex = 3;
+            this.normalMapPictureBox.TabStop = false;
+            this.normalMapPictureBox.Click += new System.EventHandler(this.normalMapPictureBox_Click);
             // 
             // tableLayoutPanel6
             // 
             this.tableLayoutPanel6.ColumnCount = 2;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 63.11475F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 36.88525F));
-            this.tableLayoutPanel6.Controls.Add(this.radioButton3, 0, 0);
-            this.tableLayoutPanel6.Controls.Add(this.radioButton4, 0, 1);
-            this.tableLayoutPanel6.Controls.Add(this.textBox1, 1, 1);
+            this.tableLayoutPanel6.Controls.Add(this.constatnLightVectorRadioButton, 0, 0);
+            this.tableLayoutPanel6.Controls.Add(this.movingLightVectorRadioButton4, 0, 1);
+            this.tableLayoutPanel6.Controls.Add(this.movingLightVectorTextBox, 1, 1);
             this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 341);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
@@ -321,35 +329,38 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(244, 86);
             this.tableLayoutPanel6.TabIndex = 16;
             // 
-            // radioButton3
+            // constatnLightVectorRadioButton
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(3, 3);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(89, 17);
-            this.radioButton3.TabIndex = 0;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "Stały [0, 0, 1]";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.constatnLightVectorRadioButton.AutoSize = true;
+            this.constatnLightVectorRadioButton.Location = new System.Drawing.Point(3, 3);
+            this.constatnLightVectorRadioButton.Name = "constatnLightVectorRadioButton";
+            this.constatnLightVectorRadioButton.Size = new System.Drawing.Size(89, 17);
+            this.constatnLightVectorRadioButton.TabIndex = 0;
+            this.constatnLightVectorRadioButton.TabStop = true;
+            this.constatnLightVectorRadioButton.Text = "Stały [0, 0, 1]";
+            this.constatnLightVectorRadioButton.UseVisualStyleBackColor = true;
+            this.constatnLightVectorRadioButton.CheckedChanged += new System.EventHandler(this.constatnLightVectorRadioButton_CheckedChanged);
             // 
-            // radioButton4
+            // movingLightVectorRadioButton4
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.radioButton4.Location = new System.Drawing.Point(3, 46);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(146, 17);
-            this.radioButton4.TabIndex = 1;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "Animowane po sferze R =";
-            this.radioButton4.UseVisualStyleBackColor = true;
+            this.movingLightVectorRadioButton4.AutoSize = true;
+            this.movingLightVectorRadioButton4.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.movingLightVectorRadioButton4.Location = new System.Drawing.Point(3, 46);
+            this.movingLightVectorRadioButton4.Name = "movingLightVectorRadioButton4";
+            this.movingLightVectorRadioButton4.Size = new System.Drawing.Size(146, 17);
+            this.movingLightVectorRadioButton4.TabIndex = 1;
+            this.movingLightVectorRadioButton4.TabStop = true;
+            this.movingLightVectorRadioButton4.Text = "Animowane po sferze R =";
+            this.movingLightVectorRadioButton4.UseVisualStyleBackColor = true;
+            this.movingLightVectorRadioButton4.CheckedChanged += new System.EventHandler(this.movingLightVectorRadioButton4_CheckedChanged);
             // 
-            // textBox1
+            // movingLightVectorTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(156, 46);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(85, 20);
-            this.textBox1.TabIndex = 2;
+            this.movingLightVectorTextBox.Location = new System.Drawing.Point(156, 46);
+            this.movingLightVectorTextBox.Name = "movingLightVectorTextBox";
+            this.movingLightVectorTextBox.Size = new System.Drawing.Size(85, 20);
+            this.movingLightVectorTextBox.TabIndex = 2;
+            this.movingLightVectorTextBox.TextChanged += new System.EventHandler(this.movingLightVectorTextBox_TextChanged);
             // 
             // label8
             // 
@@ -366,9 +377,9 @@
             this.tableLayoutPanel7.ColumnCount = 2;
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Controls.Add(this.radioButton5, 0, 0);
-            this.tableLayoutPanel7.Controls.Add(this.radioButton6, 0, 1);
-            this.tableLayoutPanel7.Controls.Add(this.pictureBox3, 1, 1);
+            this.tableLayoutPanel7.Controls.Add(this.lackOfDisorderRadioButton, 0, 0);
+            this.tableLayoutPanel7.Controls.Add(this.heightMapRadioButton, 0, 1);
+            this.tableLayoutPanel7.Controls.Add(this.heightMapPictureBox, 1, 1);
             this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 465);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 2;
@@ -377,35 +388,39 @@
             this.tableLayoutPanel7.Size = new System.Drawing.Size(244, 118);
             this.tableLayoutPanel7.TabIndex = 18;
             // 
-            // radioButton5
+            // lackOfDisorderRadioButton
             // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(3, 3);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(86, 17);
-            this.radioButton5.TabIndex = 0;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "Brak [0, 0, 0]";
-            this.radioButton5.UseVisualStyleBackColor = true;
+            this.lackOfDisorderRadioButton.AutoSize = true;
+            this.lackOfDisorderRadioButton.Location = new System.Drawing.Point(3, 3);
+            this.lackOfDisorderRadioButton.Name = "lackOfDisorderRadioButton";
+            this.lackOfDisorderRadioButton.Size = new System.Drawing.Size(86, 17);
+            this.lackOfDisorderRadioButton.TabIndex = 0;
+            this.lackOfDisorderRadioButton.TabStop = true;
+            this.lackOfDisorderRadioButton.Text = "Brak [0, 0, 0]";
+            this.lackOfDisorderRadioButton.UseVisualStyleBackColor = true;
+            this.lackOfDisorderRadioButton.CheckedChanged += new System.EventHandler(this.lackOfDisorderRadioButton_CheckedChanged);
             // 
-            // radioButton6
+            // heightMapRadioButton
             // 
-            this.radioButton6.AutoSize = true;
-            this.radioButton6.Location = new System.Drawing.Point(3, 62);
-            this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(116, 17);
-            this.radioButton6.TabIndex = 1;
-            this.radioButton6.TabStop = true;
-            this.radioButton6.Text = "Z tekstury Height Map";
-            this.radioButton6.UseVisualStyleBackColor = true;
+            this.heightMapRadioButton.AutoSize = true;
+            this.heightMapRadioButton.Location = new System.Drawing.Point(3, 62);
+            this.heightMapRadioButton.Name = "heightMapRadioButton";
+            this.heightMapRadioButton.Size = new System.Drawing.Size(116, 17);
+            this.heightMapRadioButton.TabIndex = 1;
+            this.heightMapRadioButton.TabStop = true;
+            this.heightMapRadioButton.Text = "Z tekstury Height Map";
+            this.heightMapRadioButton.UseVisualStyleBackColor = true;
+            this.heightMapRadioButton.CheckedChanged += new System.EventHandler(this.heightMapRadioButton_CheckedChanged);
             // 
-            // pictureBox3
+            // heightMapPictureBox
             // 
-            this.pictureBox3.Location = new System.Drawing.Point(125, 62);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(60, 44);
-            this.pictureBox3.TabIndex = 2;
-            this.pictureBox3.TabStop = false;
+            this.heightMapPictureBox.BackColor = System.Drawing.Color.White;
+            this.heightMapPictureBox.Location = new System.Drawing.Point(125, 62);
+            this.heightMapPictureBox.Name = "heightMapPictureBox";
+            this.heightMapPictureBox.Size = new System.Drawing.Size(60, 44);
+            this.heightMapPictureBox.TabIndex = 2;
+            this.heightMapPictureBox.TabStop = false;
+            this.heightMapPictureBox.Click += new System.EventHandler(this.heightMapPictureBox_Click);
             // 
             // label7
             // 
@@ -436,15 +451,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.texturePictureBox)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.lightColorPictureBox)).EndInit();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.normalMapPictureBox)).EndInit();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.heightMapPictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -463,22 +478,23 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox lightColorPictureBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.RadioButton constantNormalVectorRadioButton;
+        private System.Windows.Forms.RadioButton normalMapRadioButton;
+        private System.Windows.Forms.PictureBox normalMapPictureBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.RadioButton constatnLightVectorRadioButton;
+        private System.Windows.Forms.RadioButton movingLightVectorRadioButton4;
+        private System.Windows.Forms.TextBox movingLightVectorTextBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
-        private System.Windows.Forms.RadioButton radioButton5;
-        private System.Windows.Forms.RadioButton radioButton6;
-        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.RadioButton lackOfDisorderRadioButton;
+        private System.Windows.Forms.RadioButton heightMapRadioButton;
+        private System.Windows.Forms.PictureBox heightMapPictureBox;
+        private System.Windows.Forms.ColorDialog LightColorColorDialog;
     }
 }
 
