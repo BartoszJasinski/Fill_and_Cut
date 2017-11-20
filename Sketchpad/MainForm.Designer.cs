@@ -75,10 +75,10 @@
             // 
             // canvas
             // 
-            this.canvas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.canvas.BackColor = System.Drawing.Color.White;
             this.canvas.Location = new System.Drawing.Point(260, 3);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(531, 610);
+            this.canvas.Size = new System.Drawing.Size(512, 512);
             this.canvas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.canvas.TabIndex = 1;
             this.canvas.TabStop = false;
@@ -285,7 +285,6 @@
             this.constantNormalVectorRadioButton.Name = "constantNormalVectorRadioButton";
             this.constantNormalVectorRadioButton.Size = new System.Drawing.Size(89, 17);
             this.constantNormalVectorRadioButton.TabIndex = 1;
-            this.constantNormalVectorRadioButton.TabStop = true;
             this.constantNormalVectorRadioButton.Text = "Stały [0, 0, 1]";
             this.constantNormalVectorRadioButton.UseVisualStyleBackColor = true;
             this.constantNormalVectorRadioButton.CheckedChanged += new System.EventHandler(this.constantNormalVectorRadioButton_CheckedChanged);
@@ -293,6 +292,7 @@
             // normalMapRadioButton
             // 
             this.normalMapRadioButton.AutoSize = true;
+            this.normalMapRadioButton.Checked = true;
             this.normalMapRadioButton.Location = new System.Drawing.Point(3, 41);
             this.normalMapRadioButton.Name = "normalMapRadioButton";
             this.normalMapRadioButton.Size = new System.Drawing.Size(116, 17);
@@ -332,6 +332,7 @@
             // constatnLightVectorRadioButton
             // 
             this.constatnLightVectorRadioButton.AutoSize = true;
+            this.constatnLightVectorRadioButton.Checked = true;
             this.constatnLightVectorRadioButton.Location = new System.Drawing.Point(3, 3);
             this.constatnLightVectorRadioButton.Name = "constatnLightVectorRadioButton";
             this.constatnLightVectorRadioButton.Size = new System.Drawing.Size(89, 17);
@@ -403,6 +404,7 @@
             // heightMapRadioButton
             // 
             this.heightMapRadioButton.AutoSize = true;
+            this.heightMapRadioButton.Checked = true;
             this.heightMapRadioButton.Location = new System.Drawing.Point(3, 62);
             this.heightMapRadioButton.Name = "heightMapRadioButton";
             this.heightMapRadioButton.Size = new System.Drawing.Size(116, 17);
@@ -436,7 +438,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(794, 616);
+            this.ClientSize = new System.Drawing.Size(774, 591);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "MainForm";
             this.Text = "SketchPad";

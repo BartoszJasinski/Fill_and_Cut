@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-
+using System.IO;
 
 using FillCut.Data;
 using FillCut.Utils;
@@ -20,11 +20,11 @@ namespace FillCut
 
         private void InitCanvasData()
         {
-            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 100));
-            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(150, 100));
-            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(300, 200));
-            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(200, 250));
-            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 200));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 100));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(150, 120));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(300, 220));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(200, 250));
+            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(120, 200));
 
             //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 100));
             //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(150, 100));
@@ -32,13 +32,13 @@ namespace FillCut
             //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(200, 150));
             //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(500, 500));
 
-            //canvasData.polygons.Add(new Polygon());
+            canvasData.polygons.Add(new Polygon());
 
-            //canvasData.polygons[1].vertices.Add(new Point(200, 200));
-            //canvasData.polygons[1].vertices.Add(new Point(250, 200));
-            //canvasData.polygons[1].vertices.Add(new Point(400, 300));
-            //canvasData.polygons[1].vertices.Add(new Point(300, 350));
-            //canvasData.polygons[1].vertices.Add(new Point(200, 300));
+            canvasData.polygons[1].vertices.Add(new Point(200, 200));
+            canvasData.polygons[1].vertices.Add(new Point(250, 220));
+            canvasData.polygons[1].vertices.Add(new Point(400, 320));
+            canvasData.polygons[1].vertices.Add(new Point(300, 350));
+            canvasData.polygons[1].vertices.Add(new Point(200, 300));
 
             //canvasData.polygons[1].vertices.Add(new Point(200, 200));
             //canvasData.polygons[1].vertices.Add(new Point(250, 200));
@@ -50,9 +50,9 @@ namespace FillCut
 
 
 
-            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 100));
-            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(150, 137));
-            canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(300, 157));
+            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(100, 100));
+            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(150, 137));
+            //canvasData.polygons[canvasData.activePolygon].vertices.Add(new Point(300, 157));
 
 
         }
@@ -86,17 +86,20 @@ namespace FillCut
 
             textureData.lightColor = Color.FromArgb(255, 255, 255);
 
-            textureData.texture = new Bitmap(@"C:\Users\bartosz\Desktop\wood_texture.jpg");
+            textureData.texture = new Bitmap(@"..\..\Res\wood_texture.jpg");
             textureData.polygonColorMode = PolygonColorMode.TextureColor;
+            texturePictureBox.Image = ResizeImage(textureData.texture, texturePictureBox.Width, texturePictureBox.Height);
 
-            textureData.normalMap = new Bitmap(@"C:\Users\bartosz\Desktop\wall_normal_map.png");
+            //textureData.sphereRadius = 10;
+            textureData.lightVectorMode = LightVectorMode.ConstantLightVector;
+
+            textureData.normalMap = new Bitmap(@"..\..\Res\wall_normal_map.jpg");
             textureData.normalVectorMode = NormalVectorMode.TextureNormalVector;
+            normalMapPictureBox.Image = ResizeImage(textureData.normalMap, normalMapPictureBox.Width, normalMapPictureBox.Height);
 
-            textureData.sphereRadius = 10;
-            textureData.lightVectorMode = LightVectorMode.MovingLightVector;
-
-            textureData.heightMap = new Bitmap(@"C:\Users\bartosz\Desktop\brick_height_map.jpg");
+            textureData.heightMap = new Bitmap(@"..\..\Res\brick_height_map.jpg");
             textureData.vectorDisorderMode = VectorDisorderMode.HeightMapDisorder;
+            heightMapPictureBox.Image = ResizeImage(textureData.heightMap, heightMapPictureBox.Width, heightMapPictureBox.Height);
 
         }
 
@@ -119,7 +122,7 @@ namespace FillCut
             if (e.Button == MouseButtons.Right)
             {
                 canvasData.clickCoordinates = e.Location;
-                //canvasData.polygons[0].vertices = GetIntersectedPolygon(canvasData.polygons[0].vertices.ToArray(), canvasData.polygons[1].vertices.ToArray()).ToList();
+                canvasData.polygons[0].vertices = GetIntersectedPolygon(canvasData.polygons[0].vertices.ToArray(), canvasData.polygons[1].vertices.ToArray()).ToList();
                 return;
             }
 
@@ -379,12 +382,21 @@ namespace FillCut
         /// <param name="subjectPoly">Can be concave or convex</param>
         /// <param name="clipPoly">Must be convex</param>
         /// <returns>The intersection of the two polygons (or null)</returns>
-        public static Point[] GetIntersectedPolygon(Point[] subjectPoly, Point[] clipPoly)
+        public Point[] GetIntersectedPolygon(Point[] subjectPoly, Point[] clipPoly)
         {
             if (subjectPoly.Length < 3 || clipPoly.Length < 3)
             {
                 throw new ArgumentException(string.Format("The polygons passed in must have at least 3 points: subject={0}, clip={1}", subjectPoly.Length.ToString(), clipPoly.Length.ToString()));
             }
+
+            int convexPolygon = 1;
+            if (CheckIfPolygonIsConvex(canvasData.polygons[1]))
+                convexPolygon = 1;
+            else
+                if (CheckIfPolygonIsConvex(canvasData.polygons[0]))
+                convexPolygon = 0;
+            else
+                throw new ArgumentException("At least 1 polygon should be convex");
 
             List<Point> outputList = subjectPoly.ToList();
 

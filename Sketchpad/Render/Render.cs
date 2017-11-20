@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Threading;
 
 using FillCut.Settings;
 using FillCut.Data;
@@ -15,7 +17,10 @@ namespace FillCut.Render
         {
             PictureBox canvas = (PictureBox)sender;
             Graphics graphics = e.Graphics;
-            graphics.Clear(Color.White);
+
+            //canvas.Image = new Bitmap(e.ClipRectangle.Right - 300 - e.ClipRectangle.Left, e.ClipRectangle.Bottom - 400 - e.ClipRectangle.Top);
+
+            //graphics.Clear(Color.White);
 
             //((Bitmap)canvas.Image).SetPixel(470, 234, Color.Black);
             //((Bitmap)canvas.Image).SetPixel(471, 234, Color.Black);
@@ -27,8 +32,21 @@ namespace FillCut.Render
             //SetPixel(e, Brushes.Black, new Point(470, 235));
             //SetPixel(e, Brushes.Black, new Point(471, 235));
 
-            //LambertReflectance.LambertModel(canvas, e, textureData);
+            //Task.Factory.StartNew(() => LambertReflectance.LambertModel(canvas, e, textureData));
+            //PictureBox current = new PictureBox();
+            
+            //    current.Width = canvas.Width;
+            //    current.Height = canvas.Height;
+            //current.Image = new Bitmap(canvas.Width, canvas.Height);
+            //    Thread thread = new Thread(() => LambertReflectance.LambertModel(current, e, textureData));
+            //    thread.Start();
 
+            
+
+            //using (Graphics G = Graphics.FromImage(canvas.Image)) { G.DrawImage(current.Image, 0, 0); }
+            //canvas.Refresh();
+
+            LambertReflectance.LambertModel(canvas, e, textureData);
 
             PolygonFilling.ScanLineFillVertexSort(e, canvasData);
 
